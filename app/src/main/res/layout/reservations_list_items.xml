@@ -10,7 +10,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical"
         android:background="#fff"
         android:layout_marginStart="5dp"
@@ -54,6 +54,15 @@
 
             />
 
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="#fff"
+        android:layout_marginStart="5dp"
+        >
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/reservation_action"
             style="?attr/borderlessButtonStyle"
@@ -62,5 +71,16 @@
             android:layout_marginStart="5dp"
             />
 
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/qr_button"
+            style="?attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            />
+
     </LinearLayout>
+    </LinearLayout>
+
+
 </com.google.android.material.card.MaterialCardView>

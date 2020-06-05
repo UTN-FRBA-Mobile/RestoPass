@@ -37,6 +37,7 @@
     <string name="title_reservations">Reservas</string>
     <string name="title_settings">Ajustes</string>
 
+    <!-- Reservations fragment -->
     <string name="reservation_action_review">Puntuar experiencia</string>
     <string name="reservation_action_cancel">Cancelar Reserva</string>
     <string name="reservation_action_canceled">Realizar otra reserva</string>
@@ -44,6 +45,8 @@
     <string name="reservation_status_canceled">Cancelaste la reserva</string>
     <string name="reservation_status_done">Reserva concretada</string>
     <string name="reservation_status_confirmed">Confirmada</string>
+    <string name="reservation_show_qr">Ver QR</string>
+    <string name="reservation_qr_title">Tu QR. Muestraselo al mozo</string>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="resto_card_text">Mirutaki</string>
