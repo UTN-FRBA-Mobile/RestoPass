@@ -15,6 +15,11 @@ data class ReservationResponse(
             this.reservations = it;
         }
     }
+
+    suspend fun cancel(reservationId : String) {
+        ReservationService.cancelReservation(reservationId)
+        get()
+    }
 }
 
 data class Reservation(
@@ -27,9 +32,5 @@ data class Reservation(
     val ownerUser : String,
     val toConfirmUsers: List<String>?,
     val confirmedUsers : List<String>?,
-    val qrBase64: String?) : Comparable<Reservation> {
-    override fun compareTo(other: Reservation): Int {
-        return if (this.state > other.state) 1 else -1
-    }
+    val qrBase64: String?)
 
-}

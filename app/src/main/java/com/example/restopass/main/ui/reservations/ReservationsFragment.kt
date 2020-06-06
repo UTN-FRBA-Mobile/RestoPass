@@ -5,20 +5,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.restopass.R
 import com.example.restopass.domain.ReservationResponse
-import com.example.restopass.login.signin.SignInFragment
 import com.example.restopass.main.common.AlertDialog
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.fragment_membership.*
 import kotlinx.coroutines.*
 import timber.log.Timber
-import java.util.*
 
 
 class ReservationsFragment : Fragment() {
@@ -74,10 +69,9 @@ class ReservationsFragment : Fragment() {
         }
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState);
-        reservationsAdapter = ReservationsAdapter();
+        reservationsAdapter = ReservationsAdapter(this);
 
         rootView.findViewById<RecyclerView>(R.id.my_recycler_view).apply {
             layoutManager = LinearLayoutManager(activity)
@@ -85,4 +79,27 @@ class ReservationsFragment : Fragment() {
         }
     }
 
+    fun cancelReservation(reservationId: String) {
+
+        coroutineScope.launch {
+            try {
+                reservationsViewModel.cancel(reservationId)
+                reservationsAdapter.list = reservationsViewModel.reservations
+                reservationsAdapter.notifyDataSetChanged()
+            } catch (e: Exception) {
+                if(isActive) {
+                    Timber.e(e)
+
+                    val titleView: View =
+                        layoutInflater.inflate(R.layout.alert_dialog_title, container, false)
+                    AlertDialog.getAlertDialog(
+                        context,
+                        titleView,
+                        view
+                    ).show()
+                }
+            }
+        }
+
+    }
 }
