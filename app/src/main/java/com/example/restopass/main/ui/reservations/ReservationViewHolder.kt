@@ -37,6 +37,8 @@ class ReservationHolder(
     private var mActionView: TextView? = null
     private var mQrView: TextView? = null
     private var mQrImageView: ImageView? = null
+    private var mDinersView: TextView? = null
+    private var mArrowView: ImageView? = null
 
     init {
         mCardView = itemView.findViewById(R.id.reservation_card)
@@ -47,6 +49,8 @@ class ReservationHolder(
         mStatusView = itemView.findViewById(R.id.reservation_status)
         mActionView = itemView.findViewById(R.id.reservation_action)
         mQrView = itemView.findViewById(R.id.qr_button)
+        mDinersView = itemView.findViewById(R.id.reservation_diners)
+        mArrowView = itemView.findViewById(R.id.reservation_arrow)
     }
 
     fun bind(reservation: Reservation) {
@@ -107,6 +111,18 @@ class ReservationHolder(
             mStatusView?.setTextColor(Color.parseColor("#d11a2a"))
             mCardView?.setBackgroundColor(Color.parseColor("#d11a2a"))
             mQrView?.visibility = View.GONE
+        }
+
+        mArrowView?.setOnClickListener {
+
+            if(mDinersView?.visibility!! == View.GONE) {
+                mDinersView?.setText(R.string.reservation_cancel_alert)
+                mDinersView?.visibility = View.VISIBLE
+                Glide.with(itemView.context).load(R.drawable.ic_arrow_up_24dp).fitCenter().into(mArrowView!!)
+            } else {
+                mDinersView?.visibility = View.GONE
+                Glide.with(itemView.context).load(R.drawable.ic_arrow_down_24dp).fitCenter().into(mArrowView!!)
+            }
         }
     }
 
