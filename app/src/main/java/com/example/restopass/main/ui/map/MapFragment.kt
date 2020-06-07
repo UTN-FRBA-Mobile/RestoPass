@@ -124,7 +124,7 @@ class MapFragment : Fragment(), OnMapReadyCallback{
                 val restaurants = RestaurantService.getRestaurants(latLng)
                 Timber.i("Got ${restaurants.size} restaurants")
                 restaurants.forEach {
-                    val position = LatLng(it.location.y, it.location.x)
+                    val position = LatLng(it.location.x, it.location.y)
                     mMap.addMarker(MarkerOptions().position(position))
                 }
                 moveCamera(latLng)
@@ -140,10 +140,10 @@ class MapFragment : Fragment(), OnMapReadyCallback{
                 val restaurants = RestaurantService.getRestaurantsForTags(selectedFilters)
                 Timber.i("Got ${restaurants.size} restaurants")
                 restaurants.forEach {
-                    val position = LatLng(it.location.y, it.location.x)
+                    val position = LatLng(it.location.x, it.location.y)
                     mMap.addMarker(MarkerOptions().position(position))
                 }
-                val firstPosition = LatLng(restaurants[0].location.y, restaurants[0].location.x)
+                val firstPosition = LatLng(restaurants[0].location.x, restaurants[0].location.y)
                 moveCamera(firstPosition)
             } catch (e: Exception) {
                 Timber.i("Error while getting restaurants for tags: ${selectedFilters}. Err: ${e.message}")
