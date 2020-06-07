@@ -17,8 +17,9 @@ data class ReservationResponse(
     }
 
     suspend fun cancel(reservationId : String) {
-        ReservationService.cancelReservation(reservationId)
-        get()
+        ReservationService.cancelReservation(reservationId).let {
+            this.reservations = it
+        }
     }
 }
 
@@ -29,8 +30,14 @@ data class Reservation(
     val restaurantName: String,
     val date : String,
     val state: String,
-    val ownerUser : String,
-    val toConfirmUsers: List<String>?,
-    val confirmedUsers : List<String>?,
-    val qrBase64: String?)
+    val ownerUser : UserReservation,
+    val toConfirmUsers: List<UserReservation>?,
+    val confirmedUsers : List<UserReservation>?,
+    val qrBase64: String?,
+    val isInvitation : Boolean)
 
+data class UserReservation(
+    val userId : String,
+    val name : String,
+    val lastName : String
+)

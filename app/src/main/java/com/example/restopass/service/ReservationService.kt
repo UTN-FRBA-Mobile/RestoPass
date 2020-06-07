@@ -20,7 +20,7 @@ object ReservationService {
                 Deferred<Response<List<Reservation>>>
 
         @PATCH("/reservations/cancel/{reservationId}")
-        fun cancelReservationAsync(@Path("reservationId") reservationId : String) : Deferred<Response<Unit>>
+        fun cancelReservationAsync(@Path("reservationId") reservationId : String) : Deferred<Response<List<Reservation>>>
     }
 
     private var api: ReservationApi
@@ -38,11 +38,11 @@ object ReservationService {
         }
     }
 
-    suspend fun cancelReservation(reservationId : String): Boolean {
+    suspend fun cancelReservation(reservationId : String): List<Reservation> {
         val response = api.cancelReservationAsync(reservationId).await()
         Timber.i("Executed POST to ${response.raw()}. Response code was ${response.code()}")
         return when {
-            response.isSuccessful -> response.isSuccessful
+            response.isSuccessful -> response.body()!!
             else -> throw response.error()
         }
     }

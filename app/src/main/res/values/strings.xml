@@ -48,6 +48,9 @@
     <string name="reservation_show_qr">Ver QR</string>
     <string name="reservation_qr_title">Tu QR. Muestraselo al mozo</string>
     <string name="reservation_cancel_alert">"¿Estas seguro que queres cancelar tu reserva?"</string>
+    <string name="reservation_diners_confirmed">"Invitados confirmados"</string>
+    <string name="reservation_diners_toConfirm">"Invitados por confirmar"</string>
+    <string name="reservation_invitation">"Invitación de <b>%1$s"</b></string>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="resto_card_text">Mirutaki</string>

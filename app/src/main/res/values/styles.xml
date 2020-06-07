@@ -43,10 +43,18 @@
         <item name="android:hint">@string/last_name_hint</item>
     </style>
 
-    <style name="TextAppearance.Label" parent="TextAppearance.MaterialComponents.Body2">
+    <style name="TextAppearance.Label" parent="TextAppearance.MaterialComponents.Body1">
         <item name="textAllCaps">true</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">?android:attr/textColorPrimary</item>
+    </style>
+
+    <style name="LabelSecondary">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
+        <item name="android:layout_marginTop">5dp</item>
+        <item name="android:layout_marginBottom">5dp</item>
     </style>
 
     <style name="StarIcon">
