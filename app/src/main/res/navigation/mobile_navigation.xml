@@ -41,10 +41,10 @@
         tools:layout="@layout/fragment_settings" >
         <action
             android:id="@+id/action_navigation_settings_to_membershipFragments"
-            app:destination="@id/membershipFragments" />
+            app:destination="@id/membershipsFragment" />
     </fragment>
     <fragment
-        android:id="@+id/membershipFragments"
+        android:id="@+id/membershipsFragment"
         android:name="com.example.restopass.main.common.membership.MembershipFragment"
         android:label="MembershipFragments" >
         <action
@@ -66,7 +66,7 @@
         android:label="RestaurantsFragment" >
         <action
             android:id="@+id/action_restaurantsFragment_to_membershipFragments"
-            app:destination="@id/membershipFragments" />
+            app:destination="@id/membershipsFragment" />
     </fragment>
 
 

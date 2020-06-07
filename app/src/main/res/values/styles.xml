@@ -43,7 +43,7 @@
         <item name="android:hint">@string/last_name_hint</item>
     </style>
 
-    <style name="TextAppearance.Label" parent="TextAppearance.MaterialComponents.Body1">
+    <style name="TextAppearance.Label" parent="TextAppearance.MaterialComponents.Body2">
         <item name="textAllCaps">true</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">?android:attr/textColorPrimary</item>
@@ -91,10 +91,11 @@
 
     <!-- Membership Fragment -->
     <style name="membershipCard">
-        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_width">320dp</item>
         <item name="android:layout_gravity">center</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginHorizontal">8dp</item>
+        <item name="android:layout_marginLeft">8dp</item>
+        <item name="android:layout_marginRight">8dp</item>
         <item name="android:layout_marginBottom">30dp</item>
     </style>
 
@@ -121,7 +122,7 @@
 
     <style name="membershipImage">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">194dp</item>
+        <item name="android:layout_height">150dp</item>
         <item name="android:layout_marginBottom">10dp</item>
         <item name="android:contentDescription">@string/membership_image_description</item>
         <item name="android:scaleType">centerCrop</item>

@@ -1,20 +1,19 @@
 package com.example.restopass.main.common.membership
 
-import android.os.Bundle
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
-import androidx.navigation.NavDirections
+import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.restopass.R
 import com.example.restopass.domain.Membership
-import com.example.restopass.main.ui.home.HomeFragmentDirections
 import kotlinx.android.synthetic.main.view_membership_item.view.*
 
-class MembershipAdapter :
+class MembershipAdapter(private val parentFragment: Fragment) :
     RecyclerView.Adapter<MembershipAdapter.MembershipViewHolder>() {
 
     var memberships: List<Membership> = listOf()
@@ -51,6 +50,19 @@ class MembershipAdapter :
                 priceTag.text = resources.getString(R.string.price_tag, membership.price.toString())
 
                 Glide.with(this).load(membership.img).into(image)
+
+                if (parentFragment is MembershipFragment) {
+                    membershipCard.layoutParams.apply {
+                        this.width = ViewGroup.LayoutParams.MATCH_PARENT
+                        membershipCard.layoutParams = this
+                    }
+
+                    image.layoutParams.apply {
+                        this.height =  TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 194.toFloat(), resources.displayMetrics).toInt()
+                        image.layoutParams = this
+                    }
+                }
+
                 description.text = membership.description
 
                 restaurantsAmount.text = membership.restaurants?.size.toString()

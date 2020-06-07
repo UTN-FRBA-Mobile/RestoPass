@@ -7,4 +7,5 @@
     <color name="restoPassGreen">#00b686</color>
     <color name="backgroundPrimary">#fff8e1</color>
     <color name="cancel">#d11a2a</color>
+    <color name="backgroundGray">#F4F2F7</color>
 </resources>

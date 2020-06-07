@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.restopass.R
 import com.example.restopass.common.orElse
 import com.example.restopass.domain.Membership
-import com.example.restopass.domain.Memberships
+import com.example.restopass.domain.MembershipsViewModel
 import com.example.restopass.main.common.AlertDialog
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_membership.*
@@ -23,7 +23,7 @@ import timber.log.Timber
 class MembershipFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var membershipAdapter: MembershipAdapter
-    private lateinit var membershipsViewModel: Memberships
+    private lateinit var membershipsViewModel: MembershipsViewModel
 
     val job = Job()
     val coroutineScope = CoroutineScope(job + Main)
@@ -35,10 +35,10 @@ class MembershipFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        membershipsViewModel = ViewModelProvider(requireActivity()).get(Memberships::class.java)
+        membershipsViewModel = ViewModelProvider(requireActivity()).get(MembershipsViewModel::class.java)
 
-        membershipAdapter = MembershipAdapter()
-        recyclerView = membershipRecyclerView.apply {
+        membershipAdapter = MembershipAdapter(this)
+        recyclerView = membershipRecycler.apply {
             layoutManager = LinearLayoutManager(this.context)
             adapter = membershipAdapter
         }
@@ -54,7 +54,7 @@ class MembershipFragment : Fragment() {
                 membershipAdapter.memberships = formatMembershipList(membershipsViewModel)
                 membershipAdapter.notifyDataSetChanged()
                 loader.visibility = View.GONE
-                membershipRecyclerView.visibility = View.VISIBLE
+                membershipRecycler.visibility = View.VISIBLE
             } catch (e: Exception) {
                 if(isActive) {
                     Timber.e(e)
@@ -72,7 +72,7 @@ class MembershipFragment : Fragment() {
         }
     }
 
-    private fun formatMembershipList(response: Memberships): List<Membership> {
+    private fun formatMembershipList(response: MembershipsViewModel): List<Membership> {
         val actualMembershipTitle =
             Membership(
                 name = "Tu Membresía",
@@ -83,13 +83,11 @@ class MembershipFragment : Fragment() {
                 name = "Otras Membresías",
                 isTitle = true
             )
-        val membershipList = response.memberships!!.toMutableList()
-        membershipList!!.apply {
+        val membershipList = response.memberships.toMutableList()
+        membershipList.apply {
             response.actualMembership?.let {
                 add(0,actualMembershipTitle)
                 add(1, it.copy(isActual = true))
-                add(2, otherMembershipsTitle)
-            }.orElse {
                 add(2, otherMembershipsTitle)
             }
         }

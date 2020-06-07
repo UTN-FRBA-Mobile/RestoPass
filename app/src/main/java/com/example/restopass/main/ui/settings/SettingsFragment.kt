@@ -5,22 +5,19 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
+import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.restopass.R
 import com.example.restopass.common.AppPreferences
 import com.example.restopass.login.LoginActivity
-import com.example.restopass.main.MainActivity
 import kotlinx.android.synthetic.main.fragment_settings.*
 
 
-class SettingsFragment : Fragment() {
+class SettingsFragment : Fragment(), SettingAdapterListener {
     private lateinit var recyclerView: RecyclerView
-
-    private val settingsViewModel: SettingsViewModel = SettingsViewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,13 +32,10 @@ class SettingsFragment : Fragment() {
 
         val viewManager = LinearLayoutManager(this.context)
         val viewAdapter =
-            SettingsAdapter(settingsViewModel.settingsItems, SettingListener { settingType ->
-                if (settingType === ButtonSettingType.PLAN) view.findNavController()
-                    .navigate(R.id.membershipFragments)
-            })
+            SettingsAdapter(SettingsList.settingsItems, this)
 
         logoutButton.setOnClickListener {
-            my_recycler_view.visibility = View.GONE
+            settingsRecyclerView.visibility = View.GONE
             logoutButton.visibility = View.GONE
             loader.visibility = View.VISIBLE
             AppPreferences.removeAllPreferences()
@@ -50,10 +44,20 @@ class SettingsFragment : Fragment() {
             requireActivity().finish()
         }
 
-        recyclerView = my_recycler_view.apply {
+        recyclerView = settingsRecyclerView.apply {
             layoutManager = viewManager
             adapter = viewAdapter
         }
+    }
+
+    override fun onClick(type: ButtonSettingType) {
+        settingsLayout[type]?.let { findNavController().navigate(it) }
+    }
+
+    companion object {
+        val settingsLayout = mapOf(
+            ButtonSettingType.PLAN to R.id.membershipsFragment
+        )
     }
 
 }

@@ -3,17 +3,24 @@ package com.example.restopass.main.ui.map.filter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.restopass.R
 import com.example.restopass.main.ui.map.MapViewModel
+import kotlinx.android.synthetic.main.view_filter_checkbox.*
+import kotlinx.android.synthetic.main.view_filter_checkbox.view.*
 import kotlinx.android.synthetic.main.view_filter_checkbox_item.view.*
 
-class CheckboxFilterAdapter(
+class CheckboxFilterWithTitleAdapter(
     private val modelViewModel: MapViewModel,
-    private val filterFragment: FilterFragment,
-    private val tags: List<String>
+    private val filterFragment: FilterFragment
 ) :
-    RecyclerView.Adapter<CheckboxFilterAdapter.FilterViewHolder>() {
+    RecyclerView.Adapter<CheckboxFilterWithTitleAdapter.FilterViewHolder>() {
+
+    private lateinit var checkboxFilterAdapter: CheckboxFilterAdapter
+    private lateinit var checkboxReciclerView: RecyclerView
+
+    private val tags = modelViewModel.filters.tags.toList()
 
     override fun getItemCount() = tags.size
 
@@ -24,15 +31,13 @@ class CheckboxFilterAdapter(
 
     override fun onBindViewHolder(holder: FilterViewHolder, position: Int) {
         holder.itemView.apply {
-            filterCheckbox.text = tags[position]
-            filterCheckbox.isChecked = modelViewModel.selectedFilters.tags.contains(tags[position])
-            filterCheckbox.setOnCheckedChangeListener { buttonView, isChecked ->
-                //TODO: Fijarme si es checked o no y sacar o poner en selectedFilters
-                if (isChecked) {
-                    filterFragment.selectedFilters.tags.add(tags[position])
-                } else {
-                    filterFragment.selectedFilters.tags.remove(tags[position])
-                }
+            val tag = tags[position]
+            checkboxFilterTitle.text = tag.first
+            checkboxFilterAdapter =
+                CheckboxFilterAdapter(modelViewModel, filterFragment, tag.second)
+            checkboxReciclerView =  checkboxRecycler.apply {
+                layoutManager = LinearLayoutManager(this.context)
+                adapter = checkboxFilterAdapter
             }
         }
     }
@@ -42,7 +47,7 @@ class CheckboxFilterAdapter(
         companion object {
             fun from(parent: ViewGroup): FilterViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
-                val view = layoutInflater.inflate(R.layout.view_filter_checkbox_item, parent, false)
+                val view = layoutInflater.inflate(R.layout.view_filter_checkbox, parent, false)
                 return FilterViewHolder(
                     view
                 )

@@ -43,23 +43,23 @@ object MembershipService {
 
     private fun MembershipResponse.toClient(): Membership {
         val restaurantsWithAccordingDishes =
-            this.restaurants!!.map { it.dishesByMembershipType(this.membershipInfo!!.membershipId)}
+            this.restaurants.map { it.dishesByMembershipType(this.membershipInfo.membershipId)}
 
-        return membershipInfo!!.let {
+        return membershipInfo.let {
             Membership(
                 it.membershipId,
                 it.name,
                 it.description,
                 it.img,
                 it.visits,
-                it.price,
+                it.price.toInt(),
                 restaurantsWithAccordingDishes
             )
         }
     }
 
     private fun Restaurant.dishesByMembershipType(membershipType: MembershipType): Restaurant {
-        return this.copy(dishes = this.dishes.filter {
+        return this.copy(dishes = this.dishes?.filter {
                     membershipType in it.topMembership.greaterMemberships().plus(it.topMembership)
             }
         )

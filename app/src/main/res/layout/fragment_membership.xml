@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F4F2F7"
+    android:background="@color/backgroundGray"
     android:orientation="vertical"
     tools:context=".main.common.membership.MembershipFragment">
 
@@ -13,13 +13,14 @@
        />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/membershipRecyclerView"
-        android:layout_width="match_parent"
+        android:id="@+id/membershipRecycler"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
         android:scrollbars="vertical"
-        android:visibility="gone"/>
+        android:visibility="gone"
+       />
 
 </RelativeLayout>

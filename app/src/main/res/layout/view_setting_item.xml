@@ -1,20 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
-    <data>
-        <variable
-            name="setting"
-            type="com.example.restopass.main.ui.settings.Setting" />
-        <variable
-            name="clickListener"
-            type="com.example.restopass.main.ui.settings.SettingListener" />
-    </data>
 <RelativeLayout
     android:id="@+id/settingItem"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:paddingTop="10dp"
-    android:onClick="@{() -> clickListener.onClick(setting)}">
+    android:paddingTop="10dp">
 
     <ImageView
         android:id="@+id/settingImage"

@@ -7,7 +7,6 @@ enum class MembershipType {
     BASIC,
     GOLD,
     PLATINUM;
-
     fun greaterMemberships() = values().filter { it > this }
 }
 
@@ -17,31 +16,18 @@ data class MembershipsResponse(
 )
 
 data class MembershipResponse(
-    val membershipInfo: MembershipInfo? = null,
-    var restaurants: List<Restaurant>? = listOf()
+    val membershipInfo: MembershipInfo,
+    var restaurants: List<Restaurant>
 )
 
 data class MembershipInfo(
     val membershipId: MembershipType,
     val name: String,
-    val description: String? = null,
-    val img: String? = null,
-    val visits: Number? = null,
-    val price: Number? = null
+    val description: String,
+    val img: String,
+    val visits: Number,
+    val price: Number
 )
-
-data class Memberships(
-    var actualMembership: Membership? = null,
-    var memberships: List<Membership>? = null
-) : ViewModel() {
-
-    suspend fun get() {
-      MembershipService.getMemberships().let {
-            this.actualMembership = it.actualMembership
-            this.memberships = it.memberships
-        }
-    }
-}
 
 data class Membership(
     val membershipId: MembershipType? = null,
@@ -53,5 +39,24 @@ data class Membership(
     var restaurants: List<Restaurant>? = listOf(),
     val isActual: Boolean = false,
     val isTitle: Boolean = false)
+
+data class Memberships(
+    var actualMembership: Membership?,
+    var memberships: List<Membership>
+)
+
+class MembershipsViewModel : ViewModel() {
+    var actualMembership: Membership? = null
+    lateinit var memberships: List<Membership>
+
+    suspend fun get() {
+        MembershipService.getMemberships().let {
+            this.actualMembership = it.actualMembership
+            this.memberships = it.memberships
+        }
+    }
+}
+
+
 
 

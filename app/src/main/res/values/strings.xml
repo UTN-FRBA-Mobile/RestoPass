@@ -29,7 +29,8 @@
 
 
     <!-- Home Fragment -->
-    <string name="home_title">Lista de planes</string>
+    <string name="membershipsTitle">Membresías</string>
+    <string name="closeRestaurantsTitle">Cerca tuyo</string>
 
     <!-- Nav buttons menu -->
     <string name="title_home">Home</string>
@@ -58,7 +59,7 @@
 
     <!-- Settings Fragment -->
     <string name="account">Cuenta</string>
-    <string name="plan">Plan</string>
+    <string name="plan">Membresías</string>
     <string name="personal_info">Información personal</string>
     <string name="payment_methods">Métodos de pago</string>
     <string name="booking_history">Historial de reservas</string>
@@ -73,7 +74,7 @@
     <string name="show_restaurants">Detalles</string>
     <string name="select_membership">Elegir membresía</string>
     <string name="membership_image_description">image</string>
-    <string name="restaurants_count_label">Restaurantes</string>
+    <string name="restaurants_count_label">Restos</string>
     <string name="dishes_count_label">Platos</string>
     <string name="visits_count_label">Visitas</string>
     <string name="price_tag">$ %1$s / mes</string>
