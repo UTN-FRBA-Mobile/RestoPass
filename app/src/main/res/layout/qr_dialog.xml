@@ -12,7 +12,7 @@
         android:text="@string/reservation_qr_title" />
 
     <ImageView
-        android:id="@+id/qr_image"
+        android:id="@+id/qrImage"
         android:layout_width="259dp"
         android:layout_height="199dp" />
 </LinearLayout>

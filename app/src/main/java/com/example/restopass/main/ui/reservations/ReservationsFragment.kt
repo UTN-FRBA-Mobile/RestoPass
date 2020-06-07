@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.restopass.R
-import com.example.restopass.domain.ReservationResponse
+import com.example.restopass.domain.ReservationViewModel
 import com.example.restopass.main.common.AlertDialog
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.*
@@ -23,7 +23,7 @@ class ReservationsFragment : Fragment() {
 
     private lateinit var reservationsAdapter: ReservationsAdapter
 
-    private lateinit var reservationsViewModel : ReservationResponse
+    private lateinit var reservationsViewModel : ReservationViewModel
 
     private lateinit var rootView: View;
 
@@ -39,7 +39,7 @@ class ReservationsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        reservationsViewModel = ViewModelProvider(requireActivity()).get(ReservationResponse::class.java)
+        reservationsViewModel = ViewModelProvider(requireActivity()).get(ReservationViewModel::class.java)
 
         rootView = inflater.inflate(R.layout.fragment_reservations, container, false)
         return rootView;

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/reservation_card"
+    android:id="@+id/reservationCard"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
@@ -19,12 +19,12 @@
         >
 
         <ImageView
-            android:id="@+id/reservation_image"
+            android:id="@+id/reservationImage"
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:scaleType="fitXY" />
         <TextView
-            android:id="@+id/reservation_title"
+            android:id="@+id/reservationTitle"
             android:layout_height="wrap_content"
             android:textAppearance="@style/TextAppearance.Label"
             android:layout_margin="15dp"
@@ -32,7 +32,7 @@
 
 
         <TextView
-            android:id="@+id/reservation_address"
+            android:id="@+id/reservationAddress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
@@ -40,7 +40,7 @@
             />
 
         <TextView
-            android:id="@+id/reservation_date"
+            android:id="@+id/reservationDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
@@ -56,7 +56,7 @@
         >
 
         <TextView
-            android:id="@+id/reservation_status"
+            android:id="@+id/reservationStatus"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
@@ -64,7 +64,7 @@
             />
 
         <TextView
-            android:id="@+id/reservation_invitation"
+            android:id="@+id/reservationInvitation"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.65"
@@ -73,7 +73,7 @@
             />
 
         <ImageView
-            android:id="@+id/reservation_arrow"
+            android:id="@+id/reservationArrow"
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_gravity="end"
@@ -82,7 +82,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/reservation_diners_module"
+        android:id="@+id/reservationDinersModule"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -92,7 +92,7 @@
         >
 
         <TextView
-            android:id="@+id/reservation_diners_confirmTitle"
+            android:id="@+id/reservationDinersConfirmTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
@@ -101,7 +101,7 @@
             />
 
         <TextView
-            android:id="@+id/reservation_diners_confirm"
+            android:id="@+id/reservationDinersConfirm"
             android:layout_marginTop="7dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -109,7 +109,7 @@
             />
 
         <TextView
-            android:id="@+id/reservation_diners_toConfirmTile"
+            android:id="@+id/reservationDinersToConfirmTile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
@@ -118,7 +118,7 @@
             />
 
         <TextView
-            android:id="@+id/reservation_diners_toConfirm"
+            android:id="@+id/reservationDinersToConfirm"
             android:layout_marginTop="7dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -136,7 +136,7 @@
         >
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/reservation_action"
+            android:id="@+id/reservationAction"
             style="?attr/borderlessButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -144,7 +144,7 @@
             />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/qr_button"
+            android:id="@+id/reservationQrButton"
             style="?attr/borderlessButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

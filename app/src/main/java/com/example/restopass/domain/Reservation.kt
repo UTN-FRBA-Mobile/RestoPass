@@ -6,9 +6,9 @@ import com.example.restopass.service.ReservationService
 import java.time.LocalDateTime
 import java.util.*
 
-data class ReservationResponse(
-    var reservations : List<Reservation> = listOf()
-) : ViewModel() {
+class ReservationViewModel : ViewModel() {
+
+    lateinit var reservations : List<Reservation>
 
     suspend fun get() {
         ReservationService.getReservations().let {
