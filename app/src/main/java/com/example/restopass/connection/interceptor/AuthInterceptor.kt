@@ -28,7 +28,7 @@ class AuthInterceptor: Interceptor {
 
                         val apiError: ApiError = rawJson.fromJson()
 
-                        if (apiError.code == 40101) {
+                        if (apiError.status == 40101) {
                             Timber.i("Access token has expired. Trying to get new refresh and access ttoken")
                             val responseRefreshToken = runBlocking {
                                 LoginService.refreshToken(AppPreferences.accessToken!!, AppPreferences.refreshToken!!)

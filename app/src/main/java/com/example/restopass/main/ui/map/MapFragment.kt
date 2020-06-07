@@ -48,13 +48,11 @@ class MapFragment : Fragment(), OnMapReadyCallback{
             ViewModelProvider(requireActivity()).get(MapViewModel::class.java)
         fetchFilters(mapViewModel)
         val root = inflater.inflate(R.layout.fragment_map, container, false)
-        initializeLocation()
         return root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (hasFilters()) search(null)
         searchHereButton.visibility = View.GONE
         searchHereButton.setOnClickListener {
             search(mMap.cameraPosition.target)
@@ -67,6 +65,7 @@ class MapFragment : Fragment(), OnMapReadyCallback{
         }
         mapSearchEdit.setOnEditorActionListener(OnEditorActionListener { v, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                mapViewModel.selectedFilters = mapViewModel.selectedFilters.copy(search = v.text.toString())
                 search(mMap.cameraPosition.target)
                 return@OnEditorActionListener true
             }
@@ -77,6 +76,8 @@ class MapFragment : Fragment(), OnMapReadyCallback{
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
         mMap.clear()
+        location = null
+        initializeLocation()
         mMap.isMyLocationEnabled = true
         mMap.setOnMyLocationButtonClickListener {
             search(location)
@@ -126,6 +127,7 @@ class MapFragment : Fragment(), OnMapReadyCallback{
                     val position = LatLng(it.location.y, it.location.x)
                     mMap.addMarker(MarkerOptions().position(position))
                 }
+                moveCamera(latLng)
             } catch (e: Exception) {
                 Timber.i("Error while getting restaurants for latLng: ${latLng}. Err: ${e.message}")
             }
@@ -141,6 +143,8 @@ class MapFragment : Fragment(), OnMapReadyCallback{
                     val position = LatLng(it.location.y, it.location.x)
                     mMap.addMarker(MarkerOptions().position(position))
                 }
+                val firstPosition = LatLng(restaurants[0].location.y, restaurants[0].location.x)
+                moveCamera(firstPosition)
             } catch (e: Exception) {
                 Timber.i("Error while getting restaurants for tags: ${selectedFilters}. Err: ${e.message}")
             }
@@ -153,11 +157,10 @@ class MapFragment : Fragment(), OnMapReadyCallback{
             fuseLoc?.lastLocation?.addOnSuccessListener  {lastLocation : Location? ->
                 lastLocation?.let {
                     val latLng = LatLng(it.latitude, it.longitude)
+                    Timber.i("Location was null: ${location == null}")
+
                     location?:apply {
-                        if(!hasFilters()) {
-                            moveCamera(latLng)
                             search(latLng)
-                        }
                     }
                     location = latLng
                 }

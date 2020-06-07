@@ -22,7 +22,7 @@ internal inline fun < reified T: Any > Response<T>.error() : ApiException {
 
     val apiError = mapper.readValue(this.errorBody()!!.string(), ApiError::class.java)
 
-    Timber.e("Error connecting with service: ${apiError.code}")
+    Timber.e("Error connecting with service: ${apiError.error}")
 
     return ApiException(apiError)
 }

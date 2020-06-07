@@ -76,14 +76,14 @@ class HomeFragment : Fragment() {
         AppPreferences.user?.actualMembership?.let {
             //TODO: Home de usuario con membresía
             coroutineScope.launch {
-                val deferred = listOf(getMemberships(), getRestaurants(LatLng(37.4219983, -122.084)))
+                val deferred = listOf(getMemberships(), getRestaurants(LatLng(-34.7052817,-58.382365)))
                 deferred.awaitAll()
 
                 loader.visibility = View.GONE
             }
         }.orElse {
             coroutineScope.launch {
-                val deferred = listOf(getMemberships(), getRestaurants(LatLng(37.4219983, -122.084)))
+                val deferred = listOf(getMemberships(), getRestaurants(LatLng(-34.705281,-58.382365)))
                 deferred.awaitAll()
 
                 loader.visibility = View.GONE

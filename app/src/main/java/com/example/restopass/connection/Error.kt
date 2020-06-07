@@ -1,7 +1,8 @@
 package com.example.restopass.connection
 
 data class ApiError(
-    val code: Number,
+    val status: Number,
     val httpStatusCode: Number,
-    val message: String
+    val message: String,
+    val error: String
 )
