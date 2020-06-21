@@ -127,7 +127,7 @@ class RestaurantFragment : Fragment() {
         // Si tiene membresía, NO viene de una tarjeta Membresía y el restaurant está en su membresía => se le muestra "Reservar Mesa"
         // Decidimos no mostrar "Reservar Mesa" si viene de una tarjeta Membresía, "detalles" porque ese resto puede tener
         // varios platos que no están en su membresía y presta a confusión
-        viewModel.actualMembership?.let {
+        AppPreferences.user.actualMembership?.let {
             if (isActualMembership(it, selectedMembership) ||
                 (selectedMembership == null && isRestaurantInMembership(it, restaurant))) {
                 restaurantFloatingButton.setText(R.string.bookTable)
@@ -208,14 +208,14 @@ class RestaurantFragment : Fragment() {
         }
     }
 
-    private fun isRestaurantInMembership(membership: Membership, restaurant: Restaurant): Boolean {
-        return membership.restaurants!!.any {
-                aRestaurant -> aRestaurant.restaurantId == restaurant.restaurantId
+    private fun isRestaurantInMembership(membershipId: Int, restaurant: Restaurant): Boolean {
+       return restaurant.dishes.any {
+            it.isIncluded(membershipId)
         }
     }
 
-    private fun isActualMembership(actualMembership: Membership, selectedMembership: Membership?) : Boolean {
-        return actualMembership.membershipId == selectedMembership?.membershipId
+    private fun isActualMembership(actualMembershipId: Int, selectedMembership: Membership?) : Boolean {
+        return actualMembershipId == selectedMembership?.membershipId
     }
 
     // Si viene de una tarjeta membresía => le mostramos un "Elegir Membresía X"
