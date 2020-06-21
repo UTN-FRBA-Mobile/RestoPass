@@ -82,6 +82,10 @@
         android:id="@+id/navigation_enrolled_home"
         android:name="com.example.restopass.main.ui.home.enrolledHome.EnrolledHomeFragment"
         android:label="@string/title_home" />
+    <fragment
+        android:id="@+id/reservationCreateStep1"
+        android:name="com.example.restopass.main.ui.reservations.ReservationCreateStepOneFragment"
+        android:label="@string/title_home" />
 
 
 </navigation>

@@ -38,6 +38,12 @@ android {
         enabled = true
     }
 
+    allprojects {
+        repositories {
+            maven { url 'https://jitpack.io' }
+        }
+    }
+
 }
 
 dependencies {

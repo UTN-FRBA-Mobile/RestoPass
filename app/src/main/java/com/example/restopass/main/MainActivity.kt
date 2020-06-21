@@ -4,6 +4,7 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
@@ -12,9 +13,11 @@ import com.example.restopass.common.AppPreferences
 import com.example.restopass.firebase.NotificationType.*
 import com.example.restopass.main.common.LocationService
 import com.example.restopass.main.ui.home.notEnrolledHome.NotEnrolledFragmentListener
+import com.example.restopass.main.ui.reservations.ReservationCreateStepOneFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
-class MainActivity : AppCompatActivity(), NotEnrolledFragmentListener {
+class MainActivity : AppCompatActivity(), NotEnrolledFragmentListener,
+    ReservationCreateStepOneFragment.OnFragmentInteractionListener {
     var home: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -85,6 +88,13 @@ class MainActivity : AppCompatActivity(), NotEnrolledFragmentListener {
 
     override fun onEnrollClick() {
         setHomeFragment(findNavController(R.id.nav_host_fragment))
+    }
+
+    override fun showFragment(fragment: Fragment) {
+        supportFragmentManager.beginTransaction()
+            .addToBackStack(null)
+            .replace(R.id.fragmentContainer, fragment)
+            .commit()
     }
 
 }
