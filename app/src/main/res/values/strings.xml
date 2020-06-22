@@ -57,6 +57,8 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="resto_card_text">Mirutaki</string>
 
+    <!-- Create reservation fragment -->
+    <string name="create_reservation_title">Reserva para</string>
 
     <!-- Settings Fragment -->
     <string name="account">Cuenta</string>

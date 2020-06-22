@@ -8,11 +8,9 @@ import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.bumptech.glide.Glide
 import com.example.restopass.R
-import com.example.restopass.common.AppPreferences
-import com.example.restopass.common.orElse
 import com.example.restopass.domain.*
-import com.example.restopass.service.UserService
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import com.prolificinteractive.materialcalendarview.DayViewDecorator
 import com.prolificinteractive.materialcalendarview.DayViewFacade
@@ -47,12 +45,16 @@ class ReservationCreateStepOneFragment() : Fragment() {
         restaurantConfigViewModel =
             ViewModelProvider(requireActivity()).get(RestaurantConfigViewModel::class.java)
 
+        Glide.with(this).load(restaurantViewModel.restaurant.img).into(view.restaurantImageReservation)
+        view.createReservationCalendar.setImageResource(R.drawable.calendar)
+        view.createReservationRestaurantName.text = restaurantViewModel.restaurant.name
+
         coroutineScope.launch {
             try {
                 Timber.i(restaurantViewModel.restaurant.restaurantId)
                 restaurantConfigViewModel.get(restaurantViewModel.restaurant.restaurantId)
                 view.calendarView.addDecorator(DisableFullDays(restaurantConfigViewModel.restaurantConfig.slots))
-                view.calendarView.addDecorator(DisableNotWorkingDays(restaurantConfigViewModel.restaurantConfig.slots))
+                view.calendarView.visibility = View.VISIBLE
             } catch (e: Exception) {
                 if(isActive) {
                     Timber.e(e)
@@ -78,9 +80,12 @@ class DisableFullDays(private val slots : List<RestaurantSlot>) : DayViewDecorat
     @RequiresApi(Build.VERSION_CODES.O)
     override fun shouldDecorate(day: CalendarDay?): Boolean {
 
-        var slot : RestaurantSlot? = slots.find { s -> LocalDateTime.parse(s.dateTime[0][0].dateTime).dayOfMonth == day?.day }
+        var slot : RestaurantSlot? = slots.find {
+            var date : LocalDateTime = LocalDateTime.parse(it.dateTime[0][0].dateTime)
+            date.dayOfMonth == day?.day && date.monthValue == day.month
+        }
 
-        return slot?.dayFull ?: false
+        return slot?.dayFull ?: true
 
     }
 
@@ -91,21 +96,4 @@ class DisableFullDays(private val slots : List<RestaurantSlot>) : DayViewDecorat
     
 }
 
-class DisableNotWorkingDays(private val slots : List<RestaurantSlot>) : DayViewDecorator {
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    override fun shouldDecorate(day: CalendarDay?): Boolean {
-
-        var slot : RestaurantSlot? = slots.find { s -> LocalDateTime.parse(s.dateTime[0][0].dateTime).dayOfMonth == day?.day }
-
-        return slot == null
-
-    }
-
-    override fun decorate(view: DayViewFacade?) {
-        view?.setDaysDisabled(true)
-    }
-
-
-}
 
