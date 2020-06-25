@@ -86,6 +86,14 @@
         android:id="@+id/reservationCreateStep1"
         android:name="com.example.restopass.main.ui.reservations.ReservationCreateStepOneFragment"
         android:label="@string/title_home" />
+    <fragment
+        android:id="@+id/reservationCreateStep2"
+        android:name="com.example.restopass.main.ui.reservations.ReservationCreateStepTwoFragment"
+        android:label="@string/title_home" />
+    <fragment
+        android:id="@+id/reservationCreateStep3"
+        android:name="com.example.restopass.main.ui.reservations.ReservationCreateStepThreeFragment"
+        android:label="@string/title_home" />
 
 
 </navigation>

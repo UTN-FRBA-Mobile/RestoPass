@@ -16,8 +16,7 @@ import com.example.restopass.main.ui.home.notEnrolledHome.NotEnrolledFragmentLis
 import com.example.restopass.main.ui.reservations.ReservationCreateStepOneFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
-class MainActivity : AppCompatActivity(), NotEnrolledFragmentListener,
-    ReservationCreateStepOneFragment.OnFragmentInteractionListener {
+class MainActivity : AppCompatActivity(), NotEnrolledFragmentListener{
     var home: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -88,13 +87,6 @@ class MainActivity : AppCompatActivity(), NotEnrolledFragmentListener,
 
     override fun onEnrollClick() {
         setHomeFragment(findNavController(R.id.nav_host_fragment))
-    }
-
-    override fun showFragment(fragment: Fragment) {
-        supportFragmentManager.beginTransaction()
-            .addToBackStack(null)
-            .replace(R.id.fragmentContainer, fragment)
-            .commit()
     }
 
 }

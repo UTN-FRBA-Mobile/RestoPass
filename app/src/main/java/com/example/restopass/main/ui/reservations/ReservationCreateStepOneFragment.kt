@@ -5,25 +5,25 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.ColorInt
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import com.bumptech.glide.Glide
 import com.example.restopass.R
 import com.example.restopass.domain.*
-import com.prolificinteractive.materialcalendarview.CalendarDay
-import com.prolificinteractive.materialcalendarview.DayViewDecorator
-import com.prolificinteractive.materialcalendarview.DayViewFacade
+import com.prolificinteractive.materialcalendarview.*
 import kotlinx.android.synthetic.main.reservation_create_step1.view.*
 import kotlinx.coroutines.*
 import timber.log.Timber
 import java.time.LocalDateTime
 
-class ReservationCreateStepOneFragment() : Fragment() {
+class ReservationCreateStepOneFragment() : Fragment(), OnDateSelectedListener {
 
-    private var listener: OnFragmentInteractionListener? = null
     private lateinit var restaurantViewModel: RestaurantViewModel
     private lateinit var restaurantConfigViewModel: RestaurantConfigViewModel
+    private lateinit var createReservationViewModel: CreateReservationViewModel
 
     var job = Job()
     var coroutineScope = CoroutineScope(job + Dispatchers.Main)
@@ -45,8 +45,10 @@ class ReservationCreateStepOneFragment() : Fragment() {
         restaurantConfigViewModel =
             ViewModelProvider(requireActivity()).get(RestaurantConfigViewModel::class.java)
 
+        createReservationViewModel =
+            ViewModelProvider(requireActivity()).get(CreateReservationViewModel::class.java)
+
         Glide.with(this).load(restaurantViewModel.restaurant.img).into(view.restaurantImageReservation)
-        view.createReservationCalendar.setImageResource(R.drawable.calendar)
         view.createReservationRestaurantName.text = restaurantViewModel.restaurant.name
 
         coroutineScope.launch {
@@ -62,26 +64,31 @@ class ReservationCreateStepOneFragment() : Fragment() {
             }
         }
 
-
-
+        view.calendarView.setOnDateChangedListener(this)
     }
 
 
-
-    interface OnFragmentInteractionListener {
-        fun showFragment(fragment: Fragment)
+    override fun onDateSelected(
+        widget: MaterialCalendarView,
+        date: CalendarDay,
+        selected: Boolean
+    ) {
+        if(selected) {
+            createReservationViewModel.date = date
+            view?.findNavController()?.navigate(R.id.reservationCreateStep2)
+        }
     }
-
-
 }
+
+
 
 class DisableFullDays(private val slots : List<RestaurantSlot>) : DayViewDecorator {
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun shouldDecorate(day: CalendarDay?): Boolean {
 
-        var slot : RestaurantSlot? = slots.find {
-            var date : LocalDateTime = LocalDateTime.parse(it.dateTime[0][0].dateTime)
+        val slot : RestaurantSlot? = slots.find {
+            val date : LocalDateTime = LocalDateTime.parse(it.dateTime[0][0].dateTime)
             date.dayOfMonth == day?.day && date.monthValue == day.month
         }
 
@@ -93,7 +100,6 @@ class DisableFullDays(private val slots : List<RestaurantSlot>) : DayViewDecorat
         view?.setDaysDisabled(true)
     }
 
-    
 }
 
 

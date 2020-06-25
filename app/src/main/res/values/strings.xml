@@ -59,6 +59,8 @@
 
     <!-- Create reservation fragment -->
     <string name="create_reservation_title">Reserva para</string>
+    <string name="pick_time_title">Seleccione un horario</string>
+    <string name="pick_day_title">Seleccione una fecha</string>
 
     <!-- Settings Fragment -->
     <string name="account">Cuenta</string>

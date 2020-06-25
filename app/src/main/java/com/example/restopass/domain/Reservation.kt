@@ -1,10 +1,12 @@
 package com.example.restopass.domain
 
 import androidx.lifecycle.ViewModel
+import com.bumptech.glide.load.engine.bitmap_recycle.IntegerArrayAdapter
 import com.example.restopass.main.ui.reservations.ReservationsFragment
 import com.example.restopass.service.ReservationService
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.fasterxml.jackson.databind.annotation.JsonSerialize
+import com.prolificinteractive.materialcalendarview.CalendarDay
 import java.time.LocalDateTime
 import java.util.*
 
@@ -43,6 +45,12 @@ data class UserReservation(
     val name : String,
     val lastName : String
 )
+
+class CreateReservationViewModel : ViewModel() {
+    lateinit var date : CalendarDay
+    lateinit var hour : String
+    lateinit var guests : Integer
+}
 
 class RestaurantConfigViewModel : ViewModel() {
     lateinit var restaurantConfig: RestaurantConfig;
