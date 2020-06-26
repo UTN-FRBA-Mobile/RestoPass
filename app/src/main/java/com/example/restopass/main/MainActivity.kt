@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
@@ -17,6 +18,7 @@ import com.example.restopass.firebase.NotificationType.*
 import com.example.restopass.main.common.LocationService
 import com.example.restopass.main.common.restaurant.Rating
 import com.example.restopass.main.ui.home.notEnrolledHome.NotEnrolledFragmentListener
+import com.example.restopass.main.ui.reservations.ReservationCreateStepOneFragment
 import com.example.restopass.service.RestaurantScore
 import com.example.restopass.service.RestaurantService
 import com.example.restopass.service.UserService
@@ -27,7 +29,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
-class MainActivity : AppCompatActivity(), NotEnrolledFragmentListener {
+class MainActivity : AppCompatActivity(), NotEnrolledFragmentListener{
     var home: Int = 0
 
     var job = Job()

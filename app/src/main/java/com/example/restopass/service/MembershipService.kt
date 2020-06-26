@@ -27,18 +27,12 @@ object MembershipService {
     }
 
     suspend fun getMemberships(): Memberships {
-        try {
-            val response = api.getMembershipsAsync().await()
-            Timber.i("Executed POST to ${response.raw()}. Response code was ${response.code()}")
-            return when {
-                response.isSuccessful -> response.body()!!.toClient()
-                else -> throw response.error()
-            }
-        } catch (e: IOException) {
-            if (e.message !== null) throw ApiException(e.message!!.fromJson())
-            else throw e
+        val response = api.getMembershipsAsync().await()
+        Timber.i("Executed POST to ${response.raw()}. Response code was ${response.code()}")
+        return when {
+            response.isSuccessful -> response.body()!!.toClient()
+            else -> throw response.error()
         }
-       
     }
 
     suspend fun updateMembership(membershipId: Int) {
@@ -62,7 +56,7 @@ object MembershipService {
 
     private fun MembershipResponse.toClient(): Membership {
         val restaurantsWithAccordingDishes =
-            this.restaurants.map { it.dishesByMembership(this.membershipInfo.membershipId)}
+            this.restaurants.map { it.dishesByMembership(this.membershipInfo.membershipId) }
 
         return membershipInfo.let {
             Membership(
@@ -79,8 +73,8 @@ object MembershipService {
 
     private fun Restaurant.dishesByMembership(membershipId: Int): Restaurant {
         return this.copy(dishes = this.dishes.filter {
-                it.isIncluded(membershipId)
-            }
+            it.isIncluded(membershipId)
+        }
         )
     }
 

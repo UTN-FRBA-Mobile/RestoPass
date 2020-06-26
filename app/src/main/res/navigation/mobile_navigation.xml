@@ -25,7 +25,7 @@
         android:id="@+id/navigation_map"
         android:name="com.example.restopass.main.ui.map.MapFragment"
         android:label="@string/title_map"
-        tools:layout="@layout/fragment_dashboard" >
+        tools:layout="@layout/fragment_dashboard">
         <action
             android:id="@+id/action_navigation_map_to_filterFragment"
             app:destination="@id/filterFragment" />
@@ -44,7 +44,7 @@
         android:id="@+id/navigation_settings"
         android:name="com.example.restopass.main.ui.settings.SettingsFragment"
         android:label="@string/title_settings"
-        tools:layout="@layout/fragment_settings" >
+        tools:layout="@layout/fragment_settings">
         <action
             android:id="@+id/action_navigation_settings_to_membershipFragments"
             app:destination="@id/membershipsFragment" />
@@ -52,7 +52,7 @@
     <fragment
         android:id="@+id/membershipsFragment"
         android:name="com.example.restopass.main.common.membership.MembershipFragment"
-        android:label="MembershipFragments" >
+        android:label="MembershipFragments">
         <action
             android:id="@+id/action_membershipFragments_to_restaurantsFragment"
             app:destination="@id/restaurantsListFragment" />
@@ -69,7 +69,7 @@
     <fragment
         android:id="@+id/restaurantsListFragment"
         android:name="com.example.restopass.main.common.restaurant.restaurantsList.RestaurantsListFragment"
-        android:label="RestaurantsFragment" >
+        android:label="RestaurantsFragment">
         <action
             android:id="@+id/action_restaurantsFragment_to_membershipFragments"
             app:destination="@id/membershipsFragment" />
@@ -85,15 +85,35 @@
         android:id="@+id/navigation_enrolled_home"
         android:name="com.example.restopass.main.ui.home.enrolledHome.EnrolledHomeFragment"
         android:label="@string/title_home" />
+
     <fragment
         android:id="@+id/restaurantRatingFragment"
         android:name="com.example.restopass.main.common.restaurant.RestaurantRatingFragment"
-        android:label="RestaurantRatingFragment" >
+        android:label="RestaurantRatingFragment">
         <action
             android:id="@+id/action_restaurantRatingFragment_to_navigation_enrolled_home"
             app:destination="@id/navigation_enrolled_home" />
+        <action
+            android:id="@+id/action_global_restaurantRatingFragment"
+            app:destination="@id/restaurantRatingFragment" />
     </fragment>
-    <action android:id="@+id/action_global_restaurantRatingFragment" app:destination="@id/restaurantRatingFragment" />
+
+    <fragment
+        android:id="@+id/reservationCreateStep1"
+        android:name="com.example.restopass.main.ui.reservations.ReservationCreateStepOneFragment"
+        android:label="@string/title_reservations"/>
+    <fragment
+        android:id="@+id/reservationCreateStep2"
+        android:name="com.example.restopass.main.ui.reservations.ReservationCreateStepTwoFragment"
+        android:label="@string/title_reservations" />
+    <fragment
+        android:id="@+id/reservationCreateStep3"
+        android:name="com.example.restopass.main.ui.reservations.ReservationCreateStepThreeFragment"
+        android:label="@string/title_reservations" />
+    <fragment
+        android:id="@+id/reservationCreateStep4"
+        android:name="com.example.restopass.main.ui.reservations.ReservationCreateStepFourFragment"
+        android:label="@string/title_reservations" />
 
 
 </navigation>

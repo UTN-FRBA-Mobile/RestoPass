@@ -1,0 +1,58 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/times"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:weightSum="3"
+    android:padding="10dp">
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/hourButton1"
+        style="?attr/materialButtonOutlinedStyle"
+        android:layout_width="100dp"
+        android:layout_height="60dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginStart="5dp"
+        android:tag="hourButton0"
+        android:layout_weight="1"
+        android:visibility="invisible"
+        android:textColor="#87000000"
+        app:rippleColor="@color/restoPassGreen"
+        />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/hourButton2"
+        style="?attr/materialButtonOutlinedStyle"
+        android:layout_width="100dp"
+        android:layout_height="60dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginEnd="5dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:tag="hourButton1"
+        android:layout_weight="1"
+        android:visibility="invisible"
+        android:textColor="#87000000"
+        app:rippleColor="@color/restoPassGreen"
+        />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/hourButton3"
+        style="?attr/materialButtonOutlinedStyle"
+        android:layout_weight="1"
+        android:layout_width="100dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginStart="5dp"
+        android:layout_height="60dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginTop="5dp"
+        android:tag="hourButton2"
+        android:visibility="invisible"
+        android:textColor="#87000000"
+        app:rippleColor="@color/restoPassGreen"
+        />
+
+</LinearLayout>

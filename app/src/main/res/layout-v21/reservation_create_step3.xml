@@ -10,88 +10,83 @@
         android:layout_width="0dp"
         android:layout_height="150dp"
         android:scaleType="centerCrop"
+        android:tint="#A36A6A6A"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:tint="#A36A6A6A"
-        app:tintMode="src_atop"/>
+        app:tintMode="src_atop" />
 
     <TextView
         android:id="@+id/createReservationTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingTop="20dp"
+        android:text="@string/create_reservation_title"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:textSize="20sp"
-        android:textColor="#FFFFFF"
-        android:text="@string/create_reservation_title"
-        />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/createReservationRestaurantName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/createReservationTitle"
+        android:paddingTop="5dp"
+        android:paddingBottom="25dp"
         android:textColor="#FFFFFF"
         android:textSize="32sp"
         android:textStyle="bold"
-        android:paddingTop="5dp"
-        android:paddingBottom="25dp"
-        />
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/createReservationTitle" />
 
     <LinearLayout
         android:id="@+id/createReservationSteps"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@drawable/layout_bg"
         android:orientation="horizontal"
         android:padding="10dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/createReservationRestaurantName"
-        android:background="@drawable/layout_bg"
-        >
+        app:layout_constraintTop_toBottomOf="@+id/createReservationRestaurantName">
 
-        <ImageView
-            android:id="@+id/createReservationCalendar"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_marginStart="35dp"
+        <TextView
+            android:id="@+id/createReservationCalendarText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
-            android:scaleType="fitXY"
-            android:src="@drawable/calendar"/>
+            android:scaleType="fitXY" />
 
         <ImageView
             android:layout_width="1dp"
             android:layout_height="20dp"
-            android:scaleType="fitXY"
-            android:layout_marginStart="35dp"
+            android:layout_marginStart="20dp"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
-            android:src="@drawable/divisor"/>
+            android:scaleType="fitXY"
+            android:src="@drawable/divisor" />
 
-        <ImageView
-            android:id="@+id/createReservationClock"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_marginStart="35dp"
+        <TextView
+            android:id="@+id/createReservationClockText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
-            android:scaleType="fitXY"
-            android:src="@drawable/clock"/>
+            android:scaleType="fitXY" />
 
         <ImageView
             android:layout_width="1dp"
             android:layout_height="20dp"
-            android:scaleType="fitXY"
-            android:layout_marginStart="35dp"
+            android:layout_marginStart="20dp"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
-            android:src="@drawable/divisor"/>
+            android:scaleType="fitXY"
+            android:src="@drawable/divisor" />
 
         <ImageView
             android:id="@+id/createReservationGuests"
@@ -99,35 +94,35 @@
             android:layout_height="20dp"
             android:layout_marginStart="35dp"
             android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
             android:layout_marginEnd="35dp"
+            android:layout_marginBottom="10dp"
             android:scaleType="fitXY"
-            android:src="@drawable/guests"/>
-
+            android:src="@drawable/greenguests" />
 
 
     </LinearLayout>
 
     <TextView
-        android:id="@+id/createReservationPickDayTitle"
+        android:id="@+id/createReservationPickTimeTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingTop="20dp"
-        android:text="@string/pick_day_title"
+        android:text="@string/pick_guests_title"
         android:textSize="20sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/createReservationSteps" />
 
-<com.prolificinteractive.materialcalendarview.MaterialCalendarView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/calendarView"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    app:layout_constraintLeft_toLeftOf="parent"
-    app:layout_constraintRight_toRightOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/createReservationPickDayTitle"
-    android:visibility="invisible"
-    android:padding="10dp"
-    />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/createReservationPickTime"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/createReservationPickTimeTitle">
+
+
+    </androidx.recyclerview.widget.RecyclerView>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

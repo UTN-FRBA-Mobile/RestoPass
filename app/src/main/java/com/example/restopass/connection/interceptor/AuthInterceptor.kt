@@ -27,8 +27,9 @@ class AuthInterceptor: Interceptor {
             return when {
                 response.isSuccessful -> response
                 else -> {
+                    var rawJson: String? = null
                     if (response.code() == 401) {
-                        val rawJson = response.body()
+                        rawJson = response.body()!!.string()
 
                         val apiError: ApiError = rawJson!!.fromJson()
 
@@ -36,7 +37,7 @@ class AuthInterceptor: Interceptor {
                             return resolveExpiredAccessToken(originalRequest, chain)
                         }
                     }
-                    return response
+                    throw IOException(rawJson)
                 }
             }
          }
@@ -67,8 +68,8 @@ private fun resolveExpiredAccessToken(originalRequest: Request, chain: Intercept
         }
         else -> {
             //DESLOGUEAR A LA PERSONA
-            AppPreferences.removeAllPreferences()
-            throw Exception()
+            //AppPreferences.removeAllPreferences()
+            throw IOException()
         }
     }
 }

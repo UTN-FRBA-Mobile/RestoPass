@@ -21,7 +21,6 @@ class SignUpStepOneFragment : Fragment() {
 
     private lateinit var viewModel: SignUpViewModel
     private lateinit var binding: FragmentSignupStepOneBinding
-
     private val firstNameRegexes = ValidationFactory.firstNameValidations
     private val lastNameRegexes = ValidationFactory.lastNameValidations
 

@@ -131,6 +131,7 @@ class RestaurantFragment : Fragment() {
             if (isActualMembership(it, selectedMembership) ||
                 (selectedMembership == null && isRestaurantInMembership(it, restaurant))) {
                 restaurantFloatingButton.setText(R.string.bookTable)
+                restaurantFloatingButton.setOnClickListener{it.findNavController().navigate(R.id.reservationCreateStep1)}
             } else setButtonByMembership(selectedMembership)
         }.orElse {
             setButtonByMembership(selectedMembership)
