@@ -1,8 +1,6 @@
 package com.example.restopass.service
 
 import com.example.restopass.common.error
-import com.example.restopass.common.fromJson
-import com.example.restopass.connection.ApiException
 import com.example.restopass.connection.RetrofitFactory
 import com.example.restopass.domain.*
 import kotlinx.coroutines.Deferred
@@ -11,7 +9,6 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.PATCH
 import timber.log.Timber
-import java.io.IOException
 
 
 object MembershipService {
