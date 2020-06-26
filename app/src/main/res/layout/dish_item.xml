@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/restaurantVerticalCard">
+<androidx.cardview.widget.CardView
+    android:id="@+id/dishCard"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/dishVerticalCard">
 
     <LinearLayout
+        android:id="@+id/dishItem"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
         android:orientation="vertical">
-
 
         <ImageView
             android:id="@+id/dishImage"

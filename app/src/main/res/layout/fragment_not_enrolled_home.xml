@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/backgroundGray"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/backgroundGray">
 
     <ProgressBar
-        android:id="@+id/loader"
+        android:id="@+id/notEnrolledLoader"
         style="@style/progressBar"
         android:layout_gravity="center" />
 
@@ -25,14 +25,13 @@
                 android:id="@+id/membershipSection"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:visibility="gone">
+                android:layout_marginTop="@dimen/recyclerSectionMarginTop"
+                android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="8dp"
-                    android:layout_marginTop="24dp"
+                    android:layout_marginStart="@dimen/homeMarginStart"
                     android:text="@string/membershipsTitle"
                     android:textAppearance="?attr/textAppearanceHeadline6"
                     android:textSize="25sp" />
@@ -41,20 +40,38 @@
                     android:id="@+id/homeMembershipRecycler"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="10dp" />
+                    android:layout_marginVertical="@dimen/recyclerMarginVertical" />
             </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/aboutButtonSectionMarginVertical"
+                android:layout_marginStart="@dimen/homeMarginStart">
+
+                <TextView
+                    android:id="@+id/aboutButtonNotEnrolled"
+                    style="@style/aboutButton"
+                    android:text="@string/aboutRestoPassText" />
+
+                <androidx.emoji.widget.EmojiAppCompatTextView
+                    android:id="@+id/aboutButtonNotEnrolledIcon"
+                    style="@style/aboutButtonEmoji"
+                    android:layout_toEndOf="@id/aboutButtonNotEnrolled" />
+
+            </RelativeLayout>
 
             <LinearLayout
                 android:id="@+id/closeRestaurantSection"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:paddingHorizontal="8dp"
                 android:visibility="gone">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/homeMarginStart"
                     android:text="@string/closeRestaurantsTitle"
                     android:textAppearance="?attr/textAppearanceHeadline6"
                     android:textSize="25sp" />
@@ -63,8 +80,7 @@
                     android:id="@+id/homeRestaurantRecycler"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="20dp"
-                    android:layout_marginTop="10dp" />
+                    android:layout_marginVertical="20dp" />
             </LinearLayout>
 
         </LinearLayout>

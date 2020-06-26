@@ -13,6 +13,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.restopass.R
 import com.example.restopass.common.AppPreferences
+import com.example.restopass.common.EmojisHelper
+import com.example.restopass.domain.MembershipsViewModel
 import com.example.restopass.domain.Restaurant
 import com.example.restopass.domain.RestaurantViewModel
 import com.example.restopass.main.common.AlertDialog
@@ -35,6 +37,7 @@ class EnrolledHomeFragment : Fragment(), RestaurantAdapterListener {
     private lateinit var favoriteRestaurantAdapter: RestaurantAdapter
 
     private lateinit var homeViewModel: HomeViewModel
+    private lateinit var membershipsViewModel: MembershipsViewModel
 
     var job = Job()
     var coroutineScope = CoroutineScope(job + Dispatchers.Main)
@@ -51,6 +54,8 @@ class EnrolledHomeFragment : Fragment(), RestaurantAdapterListener {
         super.onViewCreated(view, savedInstanceState)
 
         homeViewModel = ViewModelProvider(requireActivity()).get(HomeViewModel::class.java)
+        membershipsViewModel =
+            ViewModelProvider(requireActivity()).get(MembershipsViewModel::class.java)
 
         selectedRestaurantViewModel = ViewModelProvider(requireActivity()).get(RestaurantViewModel::class.java)
 
@@ -64,6 +69,14 @@ class EnrolledHomeFragment : Fragment(), RestaurantAdapterListener {
         favoriteRestaurantRecyclerView = favoriteRestaurantsRecycler.apply {
             layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.HORIZONTAL, false)
             adapter = favoriteRestaurantAdapter
+        }
+
+        aboutButton.apply {
+            aboutButtonIcon.text = EmojisHelper.leftHand
+            performClick()
+            setOnClickListener {
+                AlertDialog.getAboutRestoPassModal(context, layoutInflater, container)
+            }
         }
 
     }
@@ -98,6 +111,12 @@ class EnrolledHomeFragment : Fragment(), RestaurantAdapterListener {
             }
 
             enrolledLoader.visibility = View.GONE
+
+            if (membershipsViewModel.wasEnrolled) {
+                AlertDialog.getWelcomeMembershipModal(context, layoutInflater, container, resources, membershipsViewModel.actualMembership!!)
+                membershipsViewModel.wasEnrolled = false
+            }
+
         }
     }
 
@@ -163,6 +182,7 @@ class EnrolledHomeFragment : Fragment(), RestaurantAdapterListener {
 
                     val titleView: View =
                         layoutInflater.inflate(R.layout.alert_dialog_title, container, false)
+
                     AlertDialog.getAlertDialog(
                         context,
                         titleView,
@@ -174,6 +194,7 @@ class EnrolledHomeFragment : Fragment(), RestaurantAdapterListener {
 
         findNavController().navigate(R.id.restaurantFragment)
     }
+
 
     override fun onStop() {
         super.onStop()

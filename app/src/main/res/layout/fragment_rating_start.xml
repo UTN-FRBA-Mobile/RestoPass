@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/backgroundGray">
+
+    <ProgressBar
+        android:id="@+id/loader"
+        style="@style/progressBar"
+        />
+
+    <ScrollView
+        android:id="@+id/restaurantScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/restaurantImage"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:alpha="1"
+                android:background="#555555"
+                android:contentDescription="@string/restaurantImage"
+                android:scaleType="centerCrop"
+                android:src="@drawable/mirutaki"
+                android:tint="#A36A6A6A"
+                android:visibility="visible"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tintMode="src_atop" />
+
+            <TextView
+                android:id="@+id/ratingOpinion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="12dp"
+                android:alpha="0.6"
+                android:text="Dejanos tu opinion sobre"
+                android:textAppearance="?attr/textAppearanceHeadline6"
+                android:textColor="@color/white"
+                android:textSize="20dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/restaurantImage" />
+
+            <TextView
+                android:id="@+id/restaurantName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="5dp"
+                android:text="Mirutaki House"
+                android:textAppearance="?attr/textAppearanceHeadline6"
+                android:textColor="@color/white"
+                android:textSize="30dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ratingOpinion" />
+
+            <TextView
+                android:id="@+id/restaurantAddress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Av Callo 1260, CABA"
+                android:textColor="@color/white"
+                app:layout_constraintStart_toStartOf="@+id/restaurantName"
+                app:layout_constraintTop_toBottomOf="@+id/restaurantName" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/ratingFirstStep"
+                app:layout_constraintStart_toStartOf="@+id/restaurantAddress"
+                app:layout_constraintTop_toBottomOf="@+id/restaurantImage"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/whichDish"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="70dp"
+                    android:text="¿Que plato comiste?"
+                    android:textColor="@android:color/secondary_text_light"
+                    android:textSize="35sp"
+                    app:layout_constraintStart_toStartOf="@+id/restaurantAddress"
+                    app:layout_constraintTop_toBottomOf="@+id/restaurantImage" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/dishRecyclerV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="50dp"
+                    android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintStart_toStartOf="@+id/whichDish"
+                    app:layout_constraintTop_toBottomOf="@+id/whichDish" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/ratingSecondStep"
+                app:layout_constraintStart_toStartOf="@+id/restaurantAddress"
+                app:layout_constraintTop_toBottomOf="@+id/restaurantImage"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/rateRestoText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="70dp"
+                    android:text="@string/visit_rating"
+                    android:textColor="@android:color/secondary_text_light"
+                    android:textSize="25sp"
+                    app:layout_constraintStart_toStartOf="@+id/restaurantAddress"
+                    app:layout_constraintTop_toBottomOf="@+id/restaurantImage" />
+                <RatingBar
+                    android:id="@+id/restoRatingBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:stepSize="1"
+                    android:theme="@style/Widget.AppCompat.RatingBar"
+                    android:progressTint="@color/restoPassGreen" />
+
+                <TextView
+                    android:id="@+id/rateDish"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="70dp"
+                    android:text="¿Como estuvo tu plato?"
+                    android:textColor="@android:color/secondary_text_light"
+                    android:textSize="25sp"
+                    app:layout_constraintStart_toStartOf="@+id/restaurantAddress"
+                    app:layout_constraintTop_toBottomOf="@+id/restaurantImage" />
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:id="@+id/dishNameText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Sushi"
+                        android:textColor="@android:color/secondary_text_light"
+                        android:textSize="15sp"
+                        app:layout_constraintStart_toStartOf="@+id/restaurantAddress"
+                        app:layout_constraintTop_toBottomOf="@+id/restaurantImage" />
+
+                    <TextView
+                        android:id="@+id/changeDish"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:text="Cambiar plato"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="15sp" />
+                </LinearLayout>
+                <RatingBar
+                    android:id="@+id/dishRatingBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:stepSize="1"
+                    android:theme="@style/Widget.AppCompat.RatingBar"
+                    android:progressTint="@color/restoPassGreen" />
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/rateFloatingButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom|center"
+        android:textColor="@color/white"
+        android:layout_marginBottom="20dp"
+        android:backgroundTint="@color/restoPassGreen"
+        android:text="Puntuar visita" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+

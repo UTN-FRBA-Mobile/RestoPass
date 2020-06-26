@@ -88,12 +88,12 @@ class RestaurantsListFragment : Fragment(), RestaurantAdapterListener {
         withContext(coroutineScope.coroutineContext) {
             try {
                 restaurantsList.visibility = View.GONE
-                loader.visibility = View.VISIBLE
+                notEnrolledLoader.visibility = View.VISIBLE
                 restaurantViewModel.get(restaurant.restaurantId)
             } catch (e: Exception) {
                 if(isActive) {
                     Timber.e(e)
-                    loader.visibility = View.GONE
+                    notEnrolledLoader.visibility = View.GONE
                     restaurantsList.visibility = View.VISIBLE
 
                     val titleView: View =

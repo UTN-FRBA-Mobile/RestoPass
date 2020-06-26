@@ -3,6 +3,7 @@ package com.example.restopass.connection.interceptor
 import com.example.restopass.common.AppPreferences
 import com.example.restopass.common.fromJson
 import com.example.restopass.connection.ApiError
+import com.example.restopass.connection.ApiException
 import com.example.restopass.login.domain.LoginResponse
 import com.example.restopass.service.LoginService
 import kotlinx.coroutines.runBlocking

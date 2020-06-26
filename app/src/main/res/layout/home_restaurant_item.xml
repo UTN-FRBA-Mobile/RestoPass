@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView
+    android:id="@+id/restaurantCard"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/restaurantVerticalCard">
 
     <LinearLayout

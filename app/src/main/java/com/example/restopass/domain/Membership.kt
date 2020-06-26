@@ -22,7 +22,7 @@ data class MembershipInfo(
     val price: Number
 )
 
-data class Membership(
+class Membership(
     val membershipId: Int? = null,
     val name: String,
     val description: String? = null,
@@ -30,8 +30,11 @@ data class Membership(
     val visits: Number? = null,
     val price: Number? = null,
     var restaurants: List<Restaurant>? = listOf(),
-    val isActual: Boolean = false,
-    val isTitle: Boolean = false)
+    var isActual: Boolean = false,
+    val isTitle: Boolean = false) {
+
+    fun dishesAmount() = restaurants?.flatMap { it.dishes }?.size
+}
 
 data class Memberships(
     var actualMembership: Membership?,
@@ -41,6 +44,7 @@ data class Memberships(
 class MembershipsViewModel : ViewModel() {
     var actualMembership: Membership? = null
     lateinit var memberships: MutableList<Membership>
+    var wasEnrolled = false
 
     suspend fun get() {
         MembershipService.getMemberships().let {

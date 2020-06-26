@@ -41,7 +41,10 @@ class FirebaseMessagingService : FirebaseMessagingService() {
             putExtra("fcmNotification", "true")
             putExtra("notificationType", data["type"])
             putExtra("reservationId", data["reservation_id"])
+            if(data["type"].equals(NotificationType.SCORE_EXPERIENCE.name))
+                putExtra("restaurantId", data["restaurantId"])
         }
+
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
 
         val pendingIntent = PendingIntent.getActivity(this, 0, intent,

@@ -65,9 +65,9 @@ class ReservationCreateStepThreeFragment() : Fragment(), GuestsHolder.NextListen
             .into(view.restaurantImageReservation)
         view.createReservationRestaurantName.text = restaurantViewModel.restaurant.name
         view.createReservationCalendarText.text = buildDate(createReservationViewModel.date)
-        view.createReservationClockText.text = createReservationViewModel.hour
+        view.createReservationClockText.text = createReservationViewModel.hour + "hs"
 
-        guestsAdapter.list = IntRange(0, createReservationViewModel.guests.toInt()).chunked(4)
+        guestsAdapter.list = IntRange(1, restaurantConfigViewModel.restaurantConfig.maxDiners.toInt()).chunked(4)
 
 
 
@@ -78,9 +78,9 @@ class ReservationCreateStepThreeFragment() : Fragment(), GuestsHolder.NextListen
         return date.day.toString() + "/" + date.month + "/" + date.year
     }
 
-    override fun nextAndSave(hour: String) {
-        createReservationViewModel.hour = hour
-        this.findNavController().navigate(R.id.reservationCreateStep3)
+    override fun nextAndSave(guests: Int) {
+        createReservationViewModel.guests = guests as Integer
+        this.findNavController().navigate(R.id.reservationCreateStep4)
     }
 
 }

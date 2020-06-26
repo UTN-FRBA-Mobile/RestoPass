@@ -9,6 +9,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.annotation.RequiresApi
+import androidx.core.os.bundleOf
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.restopass.R
@@ -57,6 +59,10 @@ class ReservationHolder(
                 reservationAction?.setText(R.string.reservation_action_review)
                 reservationStatus?.setText(R.string.reservation_status_done)
                 reservationCard?.setBackgroundColor(Color.GRAY)
+
+                reservationAction.setOnClickListener {
+                    it.findNavController().navigate(R.id.restaurantRatingFragment, bundleOf("restaurantId" to reservation.restaurantId))
+                }
             }
 
             val dialogClickListener =

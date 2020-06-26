@@ -2,4 +2,14 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="restaurantMarginStart">16dp</dimen>
+
+    <!-- Home Fragment -->
+    <dimen name="homeMarginStart">16dp</dimen>
+    <dimen name="recyclerSectionMarginTop">24dp</dimen>
+    <dimen name="recyclerMarginVertical">20dp</dimen>
+    <dimen name="aboutButtonSectionMarginVertical">16dp</dimen>
+    <dimen name="aboutButtonEmojiMarginStart">8dp</dimen>
+    <dimen name="aboutButtonTextSize">20dp</dimen>
+
 </resources>

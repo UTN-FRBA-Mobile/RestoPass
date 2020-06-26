@@ -8,10 +8,7 @@ import com.example.restopass.main.ui.map.SelectedFilters
 import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.Deferred
 import retrofit2.Response
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.PUT
-import retrofit2.http.Path
+import retrofit2.http.*
 import timber.log.Timber
 
 
@@ -27,10 +24,13 @@ object RestaurantService {
         fun getRestaurantTagsAsync(): Deferred<Response<Tags>>
 
         @GET("restaurants/{id}")
-        fun getRestaurant(@Path("id") id: String): Deferred<Response<Restaurant>>
+        fun getRestaurantAsync(@Path("id") id: String): Deferred<Response<Restaurant>>
 
         @GET("restaurants/favorites")
-        fun getFavoritesRestaurants(): Deferred<Response<List<Restaurant>>>
+        fun getFavoritesRestaurantsAsync(): Deferred<Response<List<Restaurant>>>
+
+        @POST("restaurants/score")
+        fun scoreRestaurantAndDishAsync(@Body score: RestaurantScore): Deferred<Response<Unit>>
     }
 
     suspend fun getRestaurants(latLng: LatLng): List<Restaurant> {
@@ -43,7 +43,7 @@ object RestaurantService {
     }
 
     suspend fun getRestaurantsForTags(latLng: LatLng, selectedFilters: SelectedFilters): List<Restaurant> {
-        val response = api.getRestaurantForTagsAsync(TagsRequestBody(selectedFilters.search, selectedFilters.tags, selectedFilters.plan, latLng.latitude, latLng.longitude)).await()
+        val response = api.getRestaurantForTagsAsync(TagsRequestBody(selectedFilters.search, selectedFilters.tags, selectedFilters.plan, lat = latLng.latitude, lng = latLng.longitude)).await()
         Timber.i("Executed GET to ${response.raw()}. Response code was ${response.code()}")
         return when {
             response.isSuccessful -> response.body()!!
@@ -61,7 +61,7 @@ object RestaurantService {
     }
 
     suspend fun getRestaurant(id: String): Restaurant {
-        val response = api.getRestaurant(id).await()
+        val response = api.getRestaurantAsync(id).await()
         Timber.i("Executed GET to ${response.raw()}. Response code was ${response.code()}")
         return when {
             response.isSuccessful -> response.body()!!
@@ -70,8 +70,17 @@ object RestaurantService {
     }
 
     suspend fun getFavoriteRestaurants(): List<Restaurant> {
-        val response = api.getFavoritesRestaurants().await()
+        val response = api.getFavoritesRestaurantsAsync().await()
         Timber.i("Executed GET to ${response.raw()}. Response code was ${response.code()}")
+        return when {
+            response.isSuccessful -> response.body()!!
+            else -> throw response.error()
+        }
+    }
+
+    suspend fun scoreRestaurant(score: RestaurantScore): Unit {
+        val response = api.scoreRestaurantAndDishAsync(score).await()
+        Timber.i("Executed POST to ${response.raw()}. Response code was ${response.code()}")
         return when {
             response.isSuccessful -> response.body()!!
             else -> throw response.error()
@@ -79,4 +88,9 @@ object RestaurantService {
     }
 }
 
-data class TagsRequestBody(val freeText: String? = null, val tags: List<String> = listOf(), val topMembership: Int? = null, val lat: Double, val lng: Double)
+data class TagsRequestBody(val freeText: String? = null,
+                           val tags: List<String> = listOf(),
+                           val topMembership: Int? = null,
+                           val lat: Double, val lng: Double)
+
+data class RestaurantScore(val restaurantId: String, val dishId: String, val starsRestaurant: Int, val starsDish: Int)

@@ -31,7 +31,7 @@ class GuestsHolder(
     parentCreateReservation: ViewGroup,
     val listener: NextListener?
 ) :
-    RecyclerView.ViewHolder(inflater.inflate(R.layout.times_row, parentCreateReservation, false)) {
+    RecyclerView.ViewHolder(inflater.inflate(R.layout.guests_row, parentCreateReservation, false)) {
 
     fun bind(timesRow: List<Int>) {
         itemView.apply {
@@ -42,17 +42,12 @@ class GuestsHolder(
                 button.setOnClickListener {
                     listener?.nextAndSave(timesRow[x])
                 }
-                if (timesRow[x].second) {
-                    button.isEnabled = false
-                    button.setBackgroundColor(resources.getColor(R.color.disableButtonColor))
-                    button.setTextColor(resources.getColor(R.color.borderGray))
-                }
             }
         }
     }
 
     interface NextListener {
-        fun nextAndSave(guests: String)
+        fun nextAndSave(guests: Int)
     }
 
 

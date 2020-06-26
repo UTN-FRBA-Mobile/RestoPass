@@ -3,12 +3,24 @@ package com.example.restopass.main.common.restaurant.restaurantsList
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RelativeLayout
 import androidx.recyclerview.widget.RecyclerView
+import com.airbnb.paris.extensions.style
 import com.bumptech.glide.Glide
 import com.example.restopass.R
 import com.example.restopass.domain.Restaurant
+import kotlinx.android.synthetic.main.home_restaurant_item.view.*
 import kotlinx.android.synthetic.main.view_restaurant_item.view.*
-import kotlinx.coroutines.*
+import kotlinx.android.synthetic.main.view_restaurant_item.view.halfStar
+import kotlinx.android.synthetic.main.view_restaurant_item.view.restaurantAddress
+import kotlinx.android.synthetic.main.view_restaurant_item.view.restaurantDishes
+import kotlinx.android.synthetic.main.view_restaurant_item.view.restaurantImage
+import kotlinx.android.synthetic.main.view_restaurant_item.view.restaurantName
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+
 
 class RestaurantAdapter(private val listener: RestaurantAdapterListener) :
     RecyclerView.Adapter<RestaurantAdapter.RestaurantViewHolder>() {
@@ -66,6 +78,9 @@ class RestaurantAdapter(private val listener: RestaurantAdapterListener) :
                     coroutineScope.launch {
                         listener.onClick(restaurant = restaurant)
                     }
+                }
+                if (position == restaurants.size - 1) {
+                    restaurantCard.style(R.style.restaurantVerticalLastCard)
                 }
 
             }

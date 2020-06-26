@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import com.example.restopass.R
 import com.example.restopass.common.AppPreferences
@@ -16,6 +17,7 @@ import com.example.restopass.main.MainActivity
 import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.android.synthetic.main.activity_login.*
 import timber.log.Timber
+import kotlin.math.sign
 
 
 class LoginActivity : AppCompatActivity(),
@@ -66,7 +68,7 @@ class LoginActivity : AppCompatActivity(),
             user = loginResponse.user
         }
 
-        startMainActicity()
+        startMainActicity(true)
     }
 
     override fun signIn(loginResponse: LoginResponse) {
@@ -89,8 +91,11 @@ class LoginActivity : AppCompatActivity(),
        startMainActicity()
     }
 
-    private fun startMainActicity() {
+    private fun startMainActicity(signUp: Boolean = false) {
         val intent = Intent(this, MainActivity::class.java)
+        if (signUp) {
+            intent.putExtra("signUp", true)
+        }
         startActivity(intent)
         finish()
     }

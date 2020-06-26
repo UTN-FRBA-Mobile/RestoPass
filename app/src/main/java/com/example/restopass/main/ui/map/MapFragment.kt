@@ -42,11 +42,6 @@ class MapFragment : Fragment(), OnMapReadyCallback{
     private lateinit var mapViewModel: MapViewModel
     private lateinit var restaurantModelView: RestaurantViewModel
     private lateinit var mMap: GoogleMap
-    private val fineLocation = Manifest.permission.ACCESS_FINE_LOCATION
-    private val coarseLocation = Manifest.permission.ACCESS_COARSE_LOCATION
-    private val permissions = arrayOf(fineLocation, coarseLocation)
-    private val permissionCode = 1234
-    private var locationGranted = false
     private var location: LatLng? = null
     val job = Job()
     val coroutineScope = CoroutineScope(job + Dispatchers.Main)
@@ -147,7 +142,7 @@ class MapFragment : Fragment(), OnMapReadyCallback{
         currentRestaurants = restaurants
         if(restaurants.isNotEmpty()) {
             restaurants.forEach {
-                val position = LatLng(it.location.x, it.location.y)
+                val position = LatLng(it.location.y, it.location.x)
                 val marker = mMap.addMarker(MarkerOptions().position(position).title(it.name))
             }
             hidePreview()

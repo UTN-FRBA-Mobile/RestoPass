@@ -8,7 +8,7 @@
     tools:context=".main.common.membership.MembershipFragment">
 
     <ProgressBar
-        android:id="@+id/loader"
+        android:id="@+id/notEnrolledLoader"
         style="@style/progressBar"
        />
 

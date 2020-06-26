@@ -66,7 +66,8 @@ data class RestaurantConfig (
     val restaurantId: String,
     val tablesPerShift: Integer,
     val minutesGap: Integer,
-    val slots : List<RestaurantSlot>
+    val slots : List<RestaurantSlot>,
+    val maxDiners : Integer
 )
 
 data class RestaurantSlot(

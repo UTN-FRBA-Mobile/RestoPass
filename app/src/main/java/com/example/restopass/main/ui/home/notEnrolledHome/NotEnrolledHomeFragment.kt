@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.restopass.R
 import com.example.restopass.common.AppPreferences
-import com.example.restopass.common.orElse
+import com.example.restopass.common.EmojisHelper
 import com.example.restopass.domain.*
 import com.example.restopass.main.common.AlertDialog
 import com.example.restopass.main.common.LocationService
@@ -79,6 +79,16 @@ class NotEnrolledHomeFragment : Fragment(), RestaurantAdapterListener, Membershi
             layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.HORIZONTAL, false)
             adapter = restaurantAdapter
         }
+
+        aboutButtonNotEnrolled.apply {
+            aboutButtonNotEnrolledIcon.text =  EmojisHelper.leftHand
+            performClick()
+            setOnClickListener {
+                AlertDialog.getAboutRestoPassModal(context, layoutInflater, container)
+            }
+        }
+
+
     }
 
     override fun onStart() {
@@ -89,26 +99,24 @@ class NotEnrolledHomeFragment : Fragment(), RestaurantAdapterListener, Membershi
             coroutineScope = CoroutineScope(job + Dispatchers.Main)
         }
 
-        loader.visibility = View.VISIBLE
-        AppPreferences.user.actualMembership?.let {
-            //TODO: Home de usuario con membresía
-            coroutineScope.launch {
-                val deferred = mutableListOf(getMemberships())
-                if (LocationService.isLocationGranted()) {
-                    deferred.add(getRestaurantsByLocation())
-                }
-                deferred.awaitAll()
+        notEnrolledLoader.visibility = View.VISIBLE
 
-                loader.visibility = View.GONE
+        coroutineScope.launch {
+            val deferred = mutableListOf(getMemberships())
+            if (LocationService.isLocationGranted()) {
+                deferred.add(getRestaurantsByLocation())
             }
-        }.orElse {
-            coroutineScope.launch {
-                val deferred = listOf(getMemberships(), getRestaurantsByLocation())
-                deferred.awaitAll()
+            deferred.awaitAll()
 
-                loader.visibility = View.GONE
+            val isSignUp = requireActivity().intent?.getBooleanExtra("signUp", false)
+            if (isSignUp == true) {
+                requireActivity().intent?.removeExtra("signUp")
+                AlertDialog.getAboutRestoPassModal(context, layoutInflater, container)
             }
+
+            notEnrolledLoader.visibility = View.GONE
         }
+
     }
 
 
@@ -135,7 +143,12 @@ class NotEnrolledHomeFragment : Fragment(), RestaurantAdapterListener, Membershi
             LocationService.addLocationListener { lastLocation: Location? ->
                 coroutineScope.launch {
                     try {
-                        homeViewModel.getRestaurants(LatLng(lastLocation!!.latitude, lastLocation.longitude))
+                        homeViewModel.getRestaurants(
+                            LatLng(
+                                lastLocation!!.latitude,
+                                lastLocation.longitude
+                            )
+                        )
 
                         restaurantAdapter.restaurants = homeViewModel.restaurants!!
                         restaurantAdapter.notifyDataSetChanged()
@@ -154,7 +167,7 @@ class NotEnrolledHomeFragment : Fragment(), RestaurantAdapterListener, Membershi
     }
 
     override fun onEnrollClick(membership: Membership) {
-        loader.visibility = View.VISIBLE
+        notEnrolledLoader.visibility = View.VISIBLE
         coroutineScope.launch {
             try {
                 membershipsViewModel.update(membership)
@@ -163,11 +176,12 @@ class NotEnrolledHomeFragment : Fragment(), RestaurantAdapterListener, Membershi
                     AppPreferences.user = this.copy(actualMembership = membership.membershipId)
                 }
 
+                membershipsViewModel.wasEnrolled = true
                 listener?.onEnrollClick()
             } catch (e: Exception) {
-                if(isActive) {
+                if (isActive) {
                     Timber.e(e)
-                    loader.visibility = View.GONE
+                    notEnrolledLoader.visibility = View.GONE
 
                     view?.findNavController()?.navigate(R.id.refreshErrorFragment)
                 }
@@ -176,17 +190,16 @@ class NotEnrolledHomeFragment : Fragment(), RestaurantAdapterListener, Membershi
     }
 
 
-
     override suspend fun onClick(restaurant: Restaurant) {
         withContext(coroutineScope.coroutineContext) {
             try {
-                loader.visibility = View.VISIBLE
+                notEnrolledLoader.visibility = View.VISIBLE
                 restaurantViewModel.get(restaurant.restaurantId)
 
             } catch (e: Exception) {
                 if (isActive) {
                     Timber.e(e)
-                    loader.visibility = View.GONE
+                    notEnrolledLoader.visibility = View.GONE
 
                     val titleView: View =
                         layoutInflater.inflate(R.layout.alert_dialog_title, container, false)
@@ -204,7 +217,8 @@ class NotEnrolledHomeFragment : Fragment(), RestaurantAdapterListener, Membershi
 
 
     override fun onDetailsClick(membership: Membership) {
-        selectedMembership = ViewModelProvider(requireActivity()).get(SelectedMembershipViewModel::class.java)
+        selectedMembership =
+            ViewModelProvider(requireActivity()).get(SelectedMembershipViewModel::class.java)
         selectedMembership.membership = membership
     }
 

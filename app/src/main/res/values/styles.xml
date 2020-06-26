@@ -91,12 +91,11 @@
 
     <!-- Membership Fragment -->
     <style name="membershipCard">
-        <item name="android:layout_width">320dp</item>
+        <item name="android:layout_width">match_parent</item>
         <item name="android:layout_gravity">center</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginLeft">8dp</item>
-        <item name="android:layout_marginRight">8dp</item>
-        <item name="android:layout_marginBottom">30dp</item>
+        <item name="android:layout_marginHorizontal">8dp</item>
+        <item name="android:layout_marginVertical">16dp</item>
     </style>
 
     <style name="tag">
@@ -207,10 +206,66 @@
         <item name="checkboxStyle">@style/Widget.MaterialComponents.CompoundButton.CheckBox</item>
     </style>
 
+
+    <!-- Home Fragment -->
     <style name="restaurantVerticalCard">
         <item name="android:layout_width">200dp</item>
         <item name="android:layout_height">300dp</item>
-        <item name="android:layout_marginEnd">16dp</item>
+        <item name="android:layout_marginStart">16dp</item>
         <item name="cardCornerRadius">8dp</item>
     </style>
+
+    <style name="restaurantVerticalLastCard" parent="restaurantVerticalCard">
+        <item name="android:layout_marginEnd">16dp</item>
+    </style>
+
+    <!-- Home Fragment -->
+    <style name="dishVerticalCard">
+        <item name="android:layout_width">200dp</item>
+        <item name="android:layout_height">300dp</item>
+        <item name="android:layout_marginStart">16dp</item>
+        <item name="cardCornerRadius">8dp</item>
+    </style>
+
+    <style name="dishVerticalLastCard" parent="dishVerticalCard">
+        <item name="android:layout_marginEnd">16dp</item>
+    </style>
+
+    <style name="membershipVerticalCard">
+        <item name="android:layout_width">320dp</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">16dp</item>
+    </style>
+
+    <style name="membershipVerticalLastCard" parent="membershipVerticalCard">
+        <item name="android:layout_marginEnd">16dp</item>
+    </style>
+
+    <style name="aboutButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_alignParentStart">true</item>
+        <item name="android:layout_alignParentTop">true</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:background">?android:attr/selectableItemBackground</item>
+        <item name="android:fontFamily">@font/rubik_bold</item>
+        <item name="android:textAppearance">?attr/textAppearanceBody2</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textSize">@dimen/aboutButtonTextSize</item>
+    </style>
+
+    <style name="aboutButtonEmoji">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:layout_marginStart">8dp</item>
+        <item name="android:textSize">@dimen/aboutButtonTextSize</item>
+    </style>
+
+
+
+
 </resources>

@@ -8,6 +8,7 @@ import com.google.android.gms.maps.model.LatLng
 class HomeViewModel : ViewModel() {
     var restaurants: List<Restaurant>? = null
     lateinit var favoriteRestaurants: List<Restaurant>
+    var wasEnrolled = false
 
     suspend fun getRestaurants(latLng: LatLng) {
         RestaurantService.getRestaurants(latLng).let {

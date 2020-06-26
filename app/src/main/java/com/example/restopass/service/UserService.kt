@@ -2,6 +2,7 @@ package com.example.restopass.service
 
 import com.example.restopass.common.error
 import com.example.restopass.connection.RetrofitFactory
+import com.example.restopass.login.domain.User
 import kotlinx.coroutines.Deferred
 import retrofit2.Response
 import retrofit2.http.POST
@@ -17,6 +18,14 @@ object UserService {
 
         @POST("/users/unfavorite/{restaurantId}")
         fun unFavRestaurant(@Path("restaurantId") restaurantId: String): Deferred<Response<Void>>
+
+        @POST("/users/check/{userId}/{baseMembership}")
+        fun checkCanAddToReservation(
+            @Path("userId") userId: String,
+            @Path("baseMembership") baseMembership: Int
+        ): Deferred<Response<User>>
+
+
     }
 
     private var api: UserApi
@@ -37,5 +46,15 @@ object UserService {
         Timber.i("Executed POST. Response code was ${response.code()}")
 
         if (!response.isSuccessful) throw response.error()
+    }
+
+    suspend fun checkCanAddToReservation(userId: String, baseMembership: Int): User {
+        val response = api.checkCanAddToReservation(userId, baseMembership).await()
+        Timber.i("Executed POST. Response code was ${response.code()}")
+
+        return when {
+            response.isSuccessful -> response.body()!!
+            else -> throw response.error()
+        }
     }
 }
