@@ -12,13 +12,13 @@ data class Restaurant(
     val tags: List<String>,
     val timeTable: List<TimeTable>,
     val dishes: List<Dish>,
-    val stars: Double,
-    val hoursToCancel : Int
+    val hoursToCancel : Int,
+    val stars: Float
 )
 
 data class TimeTable(val openingDays: List<String>, val pairHours: List<PairHour>?)
 
-class Dish(val dishId: String, val name: String, val description: String, val baseMembership: Int, val baseMembershipName: String, val stars: Double, val img: String) {
+class Dish(val dishId: String, val name: String, val description: String, val baseMembership: Int, val baseMembershipName: String, val stars: Float, val img: String) {
     fun isIncluded(membershipId: Int) = this.baseMembership <= membershipId
 }
 
@@ -37,4 +37,3 @@ class RestaurantViewModel : ViewModel() {
         }
     }
 }
-

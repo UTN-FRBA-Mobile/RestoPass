@@ -46,8 +46,6 @@ class RestaurantRatingFragment : Fragment() {
     private lateinit var viewModel: MembershipsViewModel
     private lateinit var restaurantViewModel: RestaurantViewModel
 
-    private lateinit var selectedMembership: SelectedMembershipViewModel
-
     private lateinit var restaurant: Restaurant
 
     private lateinit var selectedDish: Dish
@@ -89,9 +87,6 @@ class RestaurantRatingFragment : Fragment() {
         viewModel = ViewModelProvider(requireActivity()).get(MembershipsViewModel::class.java)
         restaurantViewModel =
             ViewModelProvider(requireActivity()).get(RestaurantViewModel::class.java)
-
-        selectedMembership =
-            ViewModelProvider(requireActivity()).get(SelectedMembershipViewModel::class.java)
 
         rating.observe(viewLifecycleOwner, Observer<Rating> { newRating ->
             if (newRating.dish > 0 && newRating.resto > 0) {

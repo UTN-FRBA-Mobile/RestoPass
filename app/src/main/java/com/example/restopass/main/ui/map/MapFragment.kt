@@ -187,8 +187,8 @@ class MapFragment : Fragment(), OnMapReadyCallback{
             val star = this.requireView().findViewById<View>(starId)
             star.visibility = View.VISIBLE
         }
-        val hasHalfStar = stars.minus(stars.toInt()) == 0.5
-        if (hasHalfStar) restoPreviewHalfStar.visibility = View.VISIBLE
+//            val hasHalfStar = stars.minus(stars.toInt()) == 0.5
+//        if (hasHalfStar) restoPreviewHalfStar.visibility = View.VISIBLE
         restaurantPreview.visibility = View.VISIBLE
     }
 }

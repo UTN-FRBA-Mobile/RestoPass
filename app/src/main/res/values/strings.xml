@@ -63,7 +63,8 @@
     <string name="pick_time_title">Seleccione un horario</string>
     <string name="pick_day_title">Seleccione una fecha</string>
     <string name="pick_guests_title">Seleccione número de comensales</string>
-    <string name="confirm_reservation_disclaimer">Acuerdate que una vez confirmada la reserva se te descuenta una visita. Puedes cancelar hasta las %1$s del %2$s</string>
+    <string name="confirm_reservation_disclaimer">Acordate que una vez confirmada la reserva se te descuenta una visita. Puedes cancelar hasta las %1$s del %2$s</string>
+    <string name="already_add_invite">Usuario ya añadido</string>
 
     <!-- Settings Fragment -->
     <string name="account">Cuenta</string>

@@ -1,11 +1,9 @@
 package com.example.restopass.main.ui.reservations
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.restopass.R
-import com.google.android.material.button.MaterialButton
 import kotlinx.android.synthetic.main.invites_row.view.*
 
 class InvitesAdapter(private val invitesFragment: ReservationCreateStepFourFragment) :
@@ -20,7 +18,7 @@ class InvitesAdapter(private val invitesFragment: ReservationCreateStepFourFragm
 
     override fun onBindViewHolder(holder: InvitesHolder, position: Int) {
         val timesRow: Pair<String, String> = list[position]
-        holder.bind(timesRow)
+        holder.bind(timesRow, this)
     }
 
     override fun getItemCount(): Int = list.size
@@ -34,9 +32,16 @@ class InvitesHolder(
 ) :
     RecyclerView.ViewHolder(inflater.inflate(R.layout.invites_row, parentCreateReservation, false)) {
 
-    fun bind(person: Pair<String, String>) {
+    fun bind(
+        person: Pair<String, String>,
+        invitesAdapter: InvitesAdapter
+    ) {
         itemView.apply {
             this.inviteNameAndLastName.text = person.second + " (" + person.first + ")"
+            this.deleteInviteIcon.setOnClickListener{
+                invitesAdapter.list.remove(person)
+                invitesAdapter.notifyDataSetChanged()
+            }
         }
     }
 

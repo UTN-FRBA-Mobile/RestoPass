@@ -22,10 +22,8 @@ import timber.log.Timber
 class RestaurantsListFragment : Fragment(), RestaurantAdapterListener {
     private lateinit var recyclerView: RecyclerView
     private lateinit var restaurantAdapter: RestaurantAdapter
-    private lateinit var viewModel: MembershipsViewModel
+    private lateinit var membershipsViewModel: MembershipsViewModel
     private lateinit var restaurantViewModel: RestaurantViewModel
-
-    private lateinit var selectedMembership: SelectedMembershipViewModel
 
     var job = Job()
     var coroutineScope = CoroutineScope(job + Dispatchers.Main)
@@ -41,17 +39,11 @@ class RestaurantsListFragment : Fragment(), RestaurantAdapterListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel = ViewModelProvider(requireActivity()).get(MembershipsViewModel::class.java)
+        membershipsViewModel = ViewModelProvider(requireActivity()).get(MembershipsViewModel::class.java)
         restaurantViewModel = ViewModelProvider(requireActivity()).get(RestaurantViewModel::class.java)
 
-        selectedMembership = ViewModelProvider(requireActivity()).get(SelectedMembershipViewModel::class.java)
-
-
-        restaurantAdapter =
-            RestaurantAdapter(
-                this
-            )
-        restaurantAdapter.restaurants = selectedMembership.membership?.restaurants!!
+        restaurantAdapter = RestaurantAdapter(this)
+        restaurantAdapter.restaurants = membershipsViewModel.selectedMembership?.restaurants!!
         restaurantAdapter.notifyDataSetChanged()
 
         recyclerView = restaurantRecyclerView.apply {
@@ -60,15 +52,37 @@ class RestaurantsListFragment : Fragment(), RestaurantAdapterListener {
         }
 
         AppPreferences.user.actualMembership?.let {
-            if (it == selectedMembership.membership!!.membershipId) {
-               floatingButtton.visibility = View.GONE
+            if (it == membershipsViewModel.selectedMembership!!.membershipId) {
+               restaurantsListFloatingButton.visibility = View.GONE
             } else {
+                restaurantsListFloatingButton.setOnClickListener {
+                   toggleLoader()
+                    coroutineScope.launch {
+                        try {
+                            membershipsViewModel.update(membershipsViewModel.selectedMembership!!)
+                            findNavController().navigate(R.id.navigation_enrolled_home)
+                        } catch (e: Exception) {
+                            if(isActive) {
+                                Timber.e(e)
+                                toggleLoader()
+
+                                val body: View =
+                                    layoutInflater.inflate(R.layout.alert_dialog_title, container, false)
+                                AlertDialog.getAlertDialog(
+                                    context,
+                                    body,
+                                    view
+                                ).show()
+                            }
+                        }
+                    }
+                }
                 recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
                     override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                         if (dy > 0)
-                            floatingButtton.hide()
+                            restaurantsListFloatingButton.hide()
                         else if (dy < 0)
-                            floatingButtton.show()
+                            restaurantsListFloatingButton.show()
                     }
                 })
             }
@@ -84,16 +98,21 @@ class RestaurantsListFragment : Fragment(), RestaurantAdapterListener {
         }
     }
 
+    private fun toggleLoader() {
+        restaurantsListLoader.visibility = if (restaurantsListLoader.visibility == View.VISIBLE) View.GONE else View.VISIBLE
+        restaurantsList.visibility =  if (restaurantsListLoader.visibility == View.VISIBLE) View.GONE else View.VISIBLE
+    }
+
     override suspend fun onClick(restaurant: Restaurant) {
         withContext(coroutineScope.coroutineContext) {
             try {
                 restaurantsList.visibility = View.GONE
-                notEnrolledLoader.visibility = View.VISIBLE
+                restaurantsListLoader.visibility = View.VISIBLE
                 restaurantViewModel.get(restaurant.restaurantId)
             } catch (e: Exception) {
                 if(isActive) {
                     Timber.e(e)
-                    notEnrolledLoader.visibility = View.GONE
+                    restaurantsListLoader.visibility = View.GONE
                     restaurantsList.visibility = View.VISIBLE
 
                     val titleView: View =

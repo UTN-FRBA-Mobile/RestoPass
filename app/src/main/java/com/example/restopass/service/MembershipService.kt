@@ -13,8 +13,7 @@ import timber.log.Timber
 
 object MembershipService {
     private var api: RestopassApi = RetrofitFactory.createClient(BASE_URL, RestopassApi::class.java)
-
-
+    
     interface RestopassApi {
         @GET("/memberships")
         fun getMembershipsAsync(): Deferred<Response<MembershipsResponse>>
@@ -53,7 +52,7 @@ object MembershipService {
 
     private fun MembershipResponse.toClient(): Membership {
         val restaurantsWithAccordingDishes =
-            this.restaurants.map { it.dishesByMembership(this.membershipInfo.membershipId)}
+            this.restaurants.map { it.dishesByMembership(this.membershipInfo.membershipId) }
 
         return membershipInfo.let {
             Membership(
@@ -70,8 +69,8 @@ object MembershipService {
 
     private fun Restaurant.dishesByMembership(membershipId: Int): Restaurant {
         return this.copy(dishes = this.dishes.filter {
-                it.isIncluded(membershipId)
-            }
+            it.isIncluded(membershipId)
+        }
         )
     }
 

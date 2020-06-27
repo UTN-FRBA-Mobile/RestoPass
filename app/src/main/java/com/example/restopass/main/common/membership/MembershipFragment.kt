@@ -13,7 +13,6 @@ import com.example.restopass.R
 import com.example.restopass.common.AppPreferences
 import com.example.restopass.domain.Membership
 import com.example.restopass.domain.MembershipsViewModel
-import com.example.restopass.domain.SelectedMembershipViewModel
 import com.example.restopass.main.common.AlertDialog
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_membership.*
@@ -26,8 +25,6 @@ class MembershipFragment : Fragment(), MembershipAdapterListener {
     private lateinit var recyclerView: RecyclerView
     private lateinit var membershipAdapter: MembershipAdapter
     private lateinit var membershipsViewModel: MembershipsViewModel
-
-    private lateinit var selectedMembership: SelectedMembershipViewModel
 
     val job = Job()
     val coroutineScope = CoroutineScope(job + Main)
@@ -86,11 +83,6 @@ class MembershipFragment : Fragment(), MembershipAdapterListener {
                 membershipAdapter.memberships = formatMembershipList(membershipsViewModel)
                 membershipAdapter.notifyDataSetChanged()
 
-                AppPreferences.user.apply {
-                    AppPreferences.user = this.copy(actualMembership = membership.membershipId)
-                }
-
-                membershipsViewModel.wasEnrolled = true
                 findNavController().navigate(R.id.navigation_enrolled_home)
             } catch (e: Exception) {
                 if(isActive) {
@@ -111,8 +103,7 @@ class MembershipFragment : Fragment(), MembershipAdapterListener {
 
 
     override fun onDetailsClick(membership: Membership) {
-        selectedMembership = ViewModelProvider(requireActivity()).get(SelectedMembershipViewModel::class.java)
-        selectedMembership.membership = membership
+        membershipsViewModel.selectedMembership = membership
     }
 
     private fun formatMembershipList(response: MembershipsViewModel): List<Membership> {

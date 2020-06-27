@@ -42,8 +42,6 @@ class NotEnrolledHomeFragment : Fragment(), RestaurantAdapterListener, Membershi
     private lateinit var homeViewModel: HomeViewModel
     private lateinit var membershipsViewModel: MembershipsViewModel
 
-    private lateinit var selectedMembership: SelectedMembershipViewModel
-
     var job = Job()
     var coroutineScope = CoroutineScope(job + Dispatchers.Main)
 
@@ -217,9 +215,7 @@ class NotEnrolledHomeFragment : Fragment(), RestaurantAdapterListener, Membershi
 
 
     override fun onDetailsClick(membership: Membership) {
-        selectedMembership =
-            ViewModelProvider(requireActivity()).get(SelectedMembershipViewModel::class.java)
-        selectedMembership.membership = membership
+        membershipsViewModel.selectedMembership = membership
     }
 
     override fun onAttach(context: Context) {

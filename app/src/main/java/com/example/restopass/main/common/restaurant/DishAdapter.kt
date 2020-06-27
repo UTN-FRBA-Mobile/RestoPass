@@ -36,14 +36,7 @@ open class DishAdapter(private val dishes: List<Dish>, private val showStars: Bo
             dishDescription.text = dish.description
 
             if (showStars) {
-                val stars = dish.stars
-                repeat(stars.toInt()) { index ->
-                    val starId =
-                        resources.getIdentifier("star${index + 1}", "id", context.packageName)
-                    findViewById<View>(starId).visibility = View.VISIBLE
-                }
-                val hasHalfStar = stars.minus(stars.toInt()) == 0.5
-                if (hasHalfStar) halfStar.visibility = View.VISIBLE
+                dishStars.rating = dish.stars
             }
 
             // Si viene de una tarjeta Membresía, separamos los platos disponibles con los que no según dicha membresía

@@ -5,9 +5,8 @@
     android:background="#F4F2F7"
     android:orientation="vertical">
 
-
     <ProgressBar
-        android:id="@+id/notEnrolledLoader"
+        android:id="@+id/restaurantsListLoader"
         style="@style/progressBar" />
 
     <RelativeLayout
@@ -40,7 +39,7 @@
         </RelativeLayout>
 
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-            android:id="@+id/floatingButtton"
+            android:id="@+id/restaurantsListFloatingButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"

@@ -50,46 +50,16 @@
                     android:layout_below="@id/dishName"
                     android:layout_marginBottom="5dp"
                     android:ellipsize="end"
-                    android:maxLines="1"
+                    android:maxLines="2"
                     android:text="Av Callo 1260, CABA" />
 
-                <LinearLayout
-                    android:id="@+id/restaurantStars"
+                <com.iarcuschin.simpleratingbar.SimpleRatingBar
+                    android:id="@+id/dishStars"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/dishDescription"
-                    android:orientation="horizontal">
+                    style="@style/star"/>
 
-                    <ImageView
-                        android:id="@+id/star1"
-                        style="@style/StarIcon"
-                        android:visibility="gone" />
-
-                    <ImageView
-                        android:id="@+id/star2"
-                        style="@style/StarIcon"
-                        android:visibility="gone" />
-
-                    <ImageView
-                        android:id="@+id/star3"
-                        style="@style/StarIcon"
-                        android:visibility="gone" />
-
-                    <ImageView
-                        android:id="@+id/star4"
-                        style="@style/StarIcon"
-                        android:visibility="gone" />
-
-                    <ImageView
-                        android:id="@+id/star5"
-                        style="@style/StarIcon"
-                        android:visibility="gone" />
-
-                    <ImageView
-                        android:id="@+id/halfStar"
-                        style="@style/HalfStarIcon"
-                        android:visibility="gone" />
-                </LinearLayout>
             </RelativeLayout>
 
             <TextView

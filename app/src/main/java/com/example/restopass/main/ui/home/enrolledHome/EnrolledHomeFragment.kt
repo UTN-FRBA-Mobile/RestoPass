@@ -96,7 +96,7 @@ class EnrolledHomeFragment : Fragment(), RestaurantAdapterListener {
             if (!AppPreferences.user.favoriteRestaurants.isNullOrEmpty()) {
                 deferred.add(getFavoriteRestaurants())
             }
-            if (homeViewModel.restaurants == null && LocationService.isLocationGranted()) {
+            if (LocationService.isLocationGranted()) {
                 deferred.add(getRestaurantsByLocation())
             }
 

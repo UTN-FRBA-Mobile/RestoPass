@@ -52,50 +52,19 @@
                 android:layout_marginBottom="5dp"
                 android:text="Av Callo 1260, CABA" />
 
-            <LinearLayout
-                android:id="@+id/restaurantStars"
+            <com.iarcuschin.simpleratingbar.SimpleRatingBar
+                android:id="@+id/restaurantRatingHorizontalCard"
+                style="@style/star"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/restaurantAddress"
-                android:layout_marginBottom="10dp"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:id="@+id/star1"
-                    style="@style/StarIcon"
-                    android:visibility="gone" />
-
-                <ImageView
-                    android:id="@+id/star2"
-                    style="@style/StarIcon"
-                    android:visibility="gone" />
-
-                <ImageView
-                    android:id="@+id/star3"
-                    style="@style/StarIcon"
-                    android:visibility="gone" />
-
-                <ImageView
-                    android:id="@+id/star4"
-                    style="@style/StarIcon"
-                    android:visibility="gone" />
-
-                <ImageView
-                    android:id="@+id/star5"
-                    style="@style/StarIcon"
-                    android:visibility="gone" />
-
-                <ImageView
-                    android:id="@+id/halfStar"
-                    style="@style/HalfStarIcon"
-                    android:visibility="gone" />
-            </LinearLayout>
+                android:layout_below="@id/restaurantAddress" />
 
             <TextView
                 android:id="@+id/restaurantDishes"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/restaurantStars"
+                android:layout_below="@id/restaurantRatingHorizontalCard"
+                android:layout_marginTop="8dp"
                 android:text="@string/available_dishes_plural"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
                 android:textSize="17sp" />

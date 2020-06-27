@@ -1,6 +1,7 @@
 package com.example.restopass.domain
 
 import androidx.lifecycle.ViewModel
+import com.example.restopass.common.AppPreferences
 import com.example.restopass.service.MembershipService
 
 data class MembershipsResponse(
@@ -44,6 +45,8 @@ data class Memberships(
 class MembershipsViewModel : ViewModel() {
     var actualMembership: Membership? = null
     lateinit var memberships: MutableList<Membership>
+
+    var selectedMembership: Membership? = null
     var wasEnrolled = false
 
     suspend fun get() {
@@ -62,11 +65,12 @@ class MembershipsViewModel : ViewModel() {
 
             this.actualMembership = membership
 
+            AppPreferences.user.apply {
+                AppPreferences.user = this.copy(actualMembership = membership.membershipId)
+            }
+
+            wasEnrolled = true
+
         }
     }
 }
-
-class SelectedMembershipViewModel : ViewModel() {
-    var membership: Membership? = null
-}
-

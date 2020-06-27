@@ -1,6 +1,5 @@
 package com.example.restopass.main.ui.reservations
 
-import android.R.attr.button
 import android.os.Build
 import android.os.Bundle
 import android.text.Editable
@@ -23,7 +22,6 @@ import com.example.restopass.domain.RestaurantViewModel
 import com.example.restopass.login.domain.User
 import com.example.restopass.main.common.AlertDialog
 import com.example.restopass.service.UserService
-import com.google.android.gms.common.util.Strings
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.invitation_error.view.*
@@ -110,31 +108,44 @@ class ReservationCreateStepFourFragment() : Fragment(), InvitesHolder.InvitesInt
             }
         })
 
-        view.createReservationSummary2.text = view.context.getString(R.string.confirm_reservation_disclaimer,
-        getCancelHour(), getCancelDate())
+        view.createReservationSummary2.text = view.context.getString(
+            R.string.confirm_reservation_disclaimer,
+            getCancelHour(), getCancelDate()
+        )
 
 
         view.createReservationInviteButton?.setOnClickListener {
             coroutineScope.launch {
-                try {
-                    var user : User = UserService.checkCanAddToReservation(
-                        view.createReservationInviteInputText!!.text.toString(),
-                        getRestaurantBaseMembership(restaurantViewModel.restaurant)!!
-                    )
 
-                    invitesAdapter.list.add(Pair(user.name + " " + user.lastName, user.email))
-                    invitesAdapter.notifyDataSetChanged()
-                } catch (e: ApiException) {
+                if (invitesAdapter.list.any { it.second == (view.createReservationInviteInputText!!.text.toString()) }) {
                     val titleView: View =
                         layoutInflater.inflate(R.layout.invitation_error, container, false)
-                    titleView.invitationErrorTitle.text =
-                        e.localizedMessage
+                    titleView.invitationErrorTitle.text = getString(R.string.already_add_invite)
                     AlertDialog.getAlertDialog(
                         titleView.context,
                         titleView
                     ).show()
-                } catch (e: Exception) {
-                    if (isActive) Timber.e(e)
+                } else {
+                    try {
+                        var user: User = UserService.checkCanAddToReservation(
+                            view.createReservationInviteInputText!!.text.toString(),
+                            getRestaurantBaseMembership(restaurantViewModel.restaurant)!!
+                        )
+
+                        invitesAdapter.list.add(Pair(user.name + " " + user.lastName, user.email))
+                        invitesAdapter.notifyDataSetChanged()
+                    } catch (e: ApiException) {
+                        val titleView: View =
+                            layoutInflater.inflate(R.layout.invitation_error, container, false)
+                        titleView.invitationErrorTitle.text =
+                            e.localizedMessage
+                        AlertDialog.getAlertDialog(
+                            titleView.context,
+                            titleView
+                        ).show()
+                    } catch (e: Exception) {
+                        if (isActive) Timber.e(e)
+                    }
                 }
             }
         }
@@ -180,17 +191,19 @@ class ReservationCreateStepFourFragment() : Fragment(), InvitesHolder.InvitesInt
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun getCancelHour(): String {
-        val dtCancel = createReservationViewModel.dateTime.minusHours(restaurantViewModel.restaurant.hoursToCancel.toLong())
-        return if(dtCancel.minute == 0) {
-            dtCancel.hour.toString() + ":" +  "00"
+        val dtCancel =
+            createReservationViewModel.dateTime.minusHours(restaurantViewModel.restaurant.hoursToCancel.toLong())
+        return if (dtCancel.minute == 0) {
+            dtCancel.hour.toString() + ":" + "00"
         } else {
             dtCancel.hour.toString() + ":" + dtCancel.minute.toString()
         }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun getCancelDate() : String? {
-        val dtCancel = createReservationViewModel.dateTime.minusHours(restaurantViewModel.restaurant.hoursToCancel.toLong())
+    private fun getCancelDate(): String? {
+        val dtCancel =
+            createReservationViewModel.dateTime.minusHours(restaurantViewModel.restaurant.hoursToCancel.toLong())
         return dateToHuman(dtCancel)
     }
 

@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -16,8 +17,10 @@ import com.example.restopass.common.AppPreferences
 import com.example.restopass.common.orElse
 import com.example.restopass.domain.*
 import com.example.restopass.main.MainActivity
-import com.example.restopass.service.UserService
+import com.example.restopass.main.common.AlertDialog
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_restaurant.*
+import kotlinx.android.synthetic.main.fragment_restaurants_list.*
 import kotlinx.coroutines.*
 import timber.log.Timber
 
@@ -28,10 +31,9 @@ class RestaurantFragment : Fragment() {
     private lateinit var dishRecyclerView: RecyclerView
     private lateinit var dishAdapter: DishAdapter
 
-    private lateinit var viewModel: MembershipsViewModel
+    private lateinit var membershipsViewModel: MembershipsViewModel
     private lateinit var restaurantViewModel: RestaurantViewModel
 
-    private lateinit var selectedMembership: SelectedMembershipViewModel
 
     var job = Job()
     var coroutineScope = CoroutineScope(job + Dispatchers.Main)
@@ -48,12 +50,10 @@ class RestaurantFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel = ViewModelProvider(requireActivity()).get(MembershipsViewModel::class.java)
+        membershipsViewModel = ViewModelProvider(requireActivity()).get(MembershipsViewModel::class.java)
         restaurantViewModel =
             ViewModelProvider(requireActivity()).get(RestaurantViewModel::class.java)
 
-        selectedMembership =
-            ViewModelProvider(requireActivity()).get(SelectedMembershipViewModel::class.java)
 
         val restaurant = restaurantViewModel.restaurant
 
@@ -75,7 +75,7 @@ class RestaurantFragment : Fragment() {
         // En cualquier otro caso, mostramos los restaurantes por como vienen
         val sortedDishes = if (isMembershipSelected == true)  {
             restaurant.dishes.sortedBy {
-                !it.isIncluded(selectedMembership.membership!!.membershipId!!)
+                !it.isIncluded(membershipsViewModel.selectedMembership!!.membershipId!!)
             }
         } else {
             AppPreferences.user.actualMembership?.run {
@@ -88,7 +88,7 @@ class RestaurantFragment : Fragment() {
         dishAdapter = DishAdapter(sortedDishes ?: restaurant.dishes )
         dishAdapter.notifyDataSetChanged()
         if (isMembershipSelected == true ) {
-            dishAdapter.selectedMembership = selectedMembership.membership
+            dishAdapter.selectedMembership = membershipsViewModel.selectedMembership
         }
 
         dishRecyclerView = dishRecyclerV.apply {
@@ -96,7 +96,7 @@ class RestaurantFragment : Fragment() {
             adapter = dishAdapter
         }
 
-        val selectedMembership = isMembershipSelected?.run { selectedMembership.membership }
+        val selectedMembership = isMembershipSelected?.run { membershipsViewModel.selectedMembership }
         fillView(restaurant, selectedMembership)
 
     }
@@ -120,14 +120,8 @@ class RestaurantFragment : Fragment() {
             restaurantAddress.text = it.address
         }
 
-        val stars = restaurant.stars
-        repeat(stars.toInt()) { index ->
-            val starId =
-                resources.getIdentifier("star${index + 1}", "id", requireContext().packageName)
-            requireView().findViewById<View>(starId).visibility = View.VISIBLE
-        }
-        val hasHalfStar = stars.minus(stars.toInt()) == 0.5
-        if (hasHalfStar) halfStar.visibility = View.VISIBLE
+        restaurantRating.rating = restaurant.stars
+
 
         //Si tiene membresía, viene de una tarjeta Membresía y es la suya => se le muestra "Reservar Mesa"
         // Si tiene membresía, NO viene de una tarjeta Membresía y el restaurant está en su membresía => se le muestra "Reservar Mesa"
@@ -138,9 +132,9 @@ class RestaurantFragment : Fragment() {
                 (selectedMembership == null && isRestaurantInMembership(it, restaurant))) {
                 restaurantFloatingButton.setText(R.string.bookTable)
                 restaurantFloatingButton.setOnClickListener{it.findNavController().navigate(R.id.reservationCreateStep1)}
-            } else setButtonByMembership(selectedMembership?.name)
+            } else setButtonByMembership(selectedMembership)
         }.orElse {
-            setButtonByMembership(selectedMembership?.name)
+            setButtonByMembership(selectedMembership)
         }
 
 
@@ -202,7 +196,7 @@ class RestaurantFragment : Fragment() {
             favoriteButton.setImageDrawable(requireContext().getDrawable(drawable))
             favoriteButton.setColorFilter(requireContext().getColor(R.color.restoPassGreen))
         } else {
-            Glide.with(this).load(drawable).into(favoriteButton)
+                Glide.with(this).load(drawable).into(favoriteButton)
         }
     }
 
@@ -216,12 +210,41 @@ class RestaurantFragment : Fragment() {
         return actualMembershipId == selectedMembership?.membershipId
     }
 
+    private fun toggleLoader() {
+        restaurantLoader.visibility = if (restaurantLoader.visibility == View.VISIBLE) View.GONE else View.VISIBLE
+        val visibility =  if (restaurantLoader.visibility == View.VISIBLE) View.GONE else View.VISIBLE
+        restaurantScrollView.visibility =  visibility
+        restaurantFloatingButton.visibility = visibility
+    }
+
     // Si viene de una tarjeta membresía => le mostramos un "Elegir Membresía X"
     //Sino => Ver membresías
-    private fun setButtonByMembership(membershipName: String?) {
-        membershipName?.let {
-            val chooseMembership = resources.getString(R.string.chooseMembership, membershipName)
+    private fun setButtonByMembership(membership: Membership?) {
+        membership?.let {
+            val chooseMembership = resources.getString(R.string.chooseMembership, membership.name)
             restaurantFloatingButton.text = chooseMembership
+            restaurantFloatingButton.setOnClickListener {
+                toggleLoader()
+                coroutineScope.launch {
+                    try {
+                        membershipsViewModel.update(membership)
+                        findNavController().navigate(R.id.navigation_enrolled_home)
+                    } catch (e: Exception) {
+                        if(isActive) {
+                            Timber.e(e)
+                            toggleLoader()
+
+                            val body: View =
+                                layoutInflater.inflate(R.layout.alert_dialog_title, container, false)
+                            AlertDialog.getAlertDialog(
+                                context,
+                                body,
+                                view
+                            ).show()
+                        }
+                    }
+                }
+            }
         }.orElse {
             restaurantFloatingButton.apply {
                 setText(R.string.showMemberships)

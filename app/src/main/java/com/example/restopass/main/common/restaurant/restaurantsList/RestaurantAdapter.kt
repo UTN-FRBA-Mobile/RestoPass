@@ -3,7 +3,6 @@ package com.example.restopass.main.common.restaurant.restaurantsList
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.RelativeLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.paris.extensions.style
 import com.bumptech.glide.Glide
@@ -11,7 +10,6 @@ import com.example.restopass.R
 import com.example.restopass.domain.Restaurant
 import kotlinx.android.synthetic.main.home_restaurant_item.view.*
 import kotlinx.android.synthetic.main.view_restaurant_item.view.*
-import kotlinx.android.synthetic.main.view_restaurant_item.view.halfStar
 import kotlinx.android.synthetic.main.view_restaurant_item.view.restaurantAddress
 import kotlinx.android.synthetic.main.view_restaurant_item.view.restaurantDishes
 import kotlinx.android.synthetic.main.view_restaurant_item.view.restaurantImage
@@ -58,14 +56,9 @@ class RestaurantAdapter(private val listener: RestaurantAdapterListener) :
             restaurantDishes.text =
                 resources.getString(dishesText, restaurant.dishes.size.toString())
 
-            val stars = restaurant.stars
-            repeat(stars.toInt()) { index ->
-                val starId =
-                    resources.getIdentifier("star${index + 1}", "id", context.packageName)
-                findViewById<View>(starId).visibility = View.VISIBLE
-            }
-            val hasHalfStar = stars.minus(stars.toInt()) == 0.5
-            if (hasHalfStar) halfStar.visibility = View.VISIBLE
+            if (listener is RestaurantsListFragment)
+            restaurantRatingHorizontalCard.rating = restaurant.stars
+            else restaurantRatingVerticalCard.rating = restaurant.stars
 
             if (listener is RestaurantsListFragment) {
                 showMoreButton.setOnClickListener {
