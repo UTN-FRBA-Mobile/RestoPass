@@ -41,10 +41,7 @@ class SettingsFragment : Fragment(), SettingAdapterListener {
 
             FirebaseMessaging.getInstance().unsubscribeFromTopic(AppPreferences.user.firebaseTopic)
 
-            AppPreferences.removeAllPreferences()
-            val intent = Intent(this.context, LoginActivity::class.java)
-            this.requireContext().startActivity(intent)
-            requireActivity().finish()
+            AppPreferences.logout()
         }
 
         recyclerView = settingsRecyclerView.apply {

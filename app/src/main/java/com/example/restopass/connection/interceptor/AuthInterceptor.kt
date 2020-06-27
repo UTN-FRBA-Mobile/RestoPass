@@ -14,7 +14,6 @@ import java.io.IOException
 
 class AuthInterceptor: Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response? {
-
         synchronized(this) {
             val originalRequest = chain.request()
             val request = originalRequest.withHeader("X-Auth-Token", AppPreferences.accessToken!!)
@@ -42,7 +41,7 @@ class AuthInterceptor: Interceptor {
 
 }
 
-private fun resolveExpiredAccessToken(originalRequest: Request, chain: Interceptor.Chain) : Response {
+private fun resolveExpiredAccessToken(originalRequest: Request, chain: Interceptor.Chain) : Response? {
     Timber.i("Access token has expired. Trying to get new refresh and access ttoken")
     val responseRefreshToken = runBlocking {
         LoginService.refreshToken(AppPreferences.accessToken!!, AppPreferences.refreshToken!!)
@@ -64,8 +63,7 @@ private fun resolveExpiredAccessToken(originalRequest: Request, chain: Intercept
             chain.proceed(newAuthenticationRequest)
         }
         else -> {
-            //DESLOGUEAR A LA PERSONA
-            AppPreferences.removeAllPreferences()
+            AppPreferences.logout()
             throw IOException()
         }
     }

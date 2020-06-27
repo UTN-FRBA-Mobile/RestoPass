@@ -13,8 +13,7 @@ import timber.log.Timber
 
 object MembershipService {
     private var api: RestopassApi = RetrofitFactory.createClient(BASE_URL, RestopassApi::class.java)
-
-
+    
     interface RestopassApi {
         @GET("/memberships")
         fun getMembershipsAsync(): Deferred<Response<MembershipsResponse>>
