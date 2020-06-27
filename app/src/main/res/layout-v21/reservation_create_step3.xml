@@ -1,9 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/backgroundGray"
+    >
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/promotionRow"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@color/backgroundGray">
 
     <ImageView
         android:id="@+id/restaurantImageReservation"
@@ -50,7 +58,8 @@
         android:padding="10dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/createReservationRestaurantName">
+        app:layout_constraintTop_toBottomOf="@+id/createReservationRestaurantName"
+        android:animateLayoutChanges="true">
 
         <TextView
             android:id="@+id/createReservationCalendarText"
@@ -77,7 +86,8 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
-            android:scaleType="fitXY" />
+            android:scaleType="fitXY"
+            android:visibility="invisible"/>
 
         <ImageView
             android:layout_width="1dp"
@@ -126,3 +136,4 @@
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

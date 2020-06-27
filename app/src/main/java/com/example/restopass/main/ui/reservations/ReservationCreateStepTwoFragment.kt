@@ -2,6 +2,7 @@ package com.example.restopass.main.ui.reservations
 
 import android.os.Build
 import android.os.Bundle
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import android.transition.Slide
+import android.transition.TransitionManager
 import com.bumptech.glide.Glide
 import com.example.restopass.R
 import com.example.restopass.domain.CreateReservationViewModel
@@ -17,7 +20,12 @@ import com.example.restopass.domain.RestaurantConfigViewModel
 import com.example.restopass.domain.RestaurantSlot
 import com.example.restopass.domain.RestaurantViewModel
 import com.prolificinteractive.materialcalendarview.CalendarDay
+import kotlinx.android.synthetic.main.reservation_create_step1.view.*
 import kotlinx.android.synthetic.main.reservation_create_step2.view.*
+import kotlinx.android.synthetic.main.reservation_create_step2.view.createReservationClock
+import kotlinx.android.synthetic.main.reservation_create_step2.view.createReservationRestaurantName
+import kotlinx.android.synthetic.main.reservation_create_step2.view.createReservationSteps
+import kotlinx.android.synthetic.main.reservation_create_step2.view.restaurantImageReservation
 import java.time.LocalDateTime
 
 
@@ -57,33 +65,44 @@ class ReservationCreateStepTwoFragment() : Fragment(), TimesHolder.NextListener 
         createReservationViewModel =
             ViewModelProvider(requireActivity()).get(CreateReservationViewModel::class.java)
 
-        Glide.with(this).load(restaurantViewModel.restaurant.img)
-            .into(view.restaurantImageReservation)
-        view.createReservationRestaurantName.text = restaurantViewModel.restaurant.name
-        view.createReservationCalendarText.text = buildDate(createReservationViewModel.date)
-        view.createReservationClock.setImageResource(R.drawable.greenclock)
+        view.apply {
 
-        var slot: RestaurantSlot? = restaurantConfigViewModel.restaurantConfig.slots.find {
-            val date: LocalDateTime = LocalDateTime.parse(it.dateTime[0][0].dateTime)
-            date.dayOfMonth == createReservationViewModel.date.day && date.monthValue == createReservationViewModel.date.month
-        }
 
-        val times = slot?.dateTime?.flatMap {
-            it.map {
-                val localDateTime = LocalDateTime.parse(it.dateTime)
-                val emptyTime = it.tablesAvailable == 0
-                if (localDateTime.minute == 0) {
-                    Pair(localDateTime.hour.toString() + ":00", emptyTime)
-                } else {
-                    Pair(
-                        localDateTime.hour.toString() + ":" + localDateTime.minute.toString(),
-                        emptyTime
-                    )
+            val slide = Slide()
+            slide.slideEdge = Gravity.TOP
+
+            TransitionManager.beginDelayedTransition(createReservationSteps,slide);
+            createReservationCalendarText.visibility = View.VISIBLE;
+
+            Glide.with(this).load(restaurantViewModel.restaurant.img)
+                .into(restaurantImageReservation)
+            createReservationRestaurantName.text = restaurantViewModel.restaurant.name
+            createReservationCalendarText.text = buildDate(createReservationViewModel.date)
+            createReservationClock.setImageResource(R.drawable.greenclock)
+
+            var slot: RestaurantSlot? = restaurantConfigViewModel.restaurantConfig.slots.find {
+                val date: LocalDateTime = LocalDateTime.parse(it.dateTime[0][0].dateTime)
+                date.dayOfMonth == createReservationViewModel.date.day && date.monthValue == createReservationViewModel.date.month
+            }
+
+            val times = slot?.dateTime?.flatMap {
+                it.map {
+                    val localDateTime = LocalDateTime.parse(it.dateTime)
+                    val emptyTime = it.tablesAvailable == 0
+                    if (localDateTime.minute == 0) {
+                        Pair(localDateTime.hour.toString() + ":00", emptyTime)
+                    } else {
+                        Pair(
+                            localDateTime.hour.toString() + ":" + localDateTime.minute.toString(),
+                            emptyTime
+                        )
+                    }
                 }
             }
-        }
 
-        timesAdapter.list = times?.chunked(3)!!
+            timesAdapter.list = times?.chunked(3)!!
+
+        }
 
     }
 

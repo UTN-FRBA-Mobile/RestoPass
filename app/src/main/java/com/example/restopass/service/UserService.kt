@@ -2,6 +2,7 @@ package com.example.restopass.service
 
 import com.example.restopass.common.error
 import com.example.restopass.common.fromJson
+import com.example.restopass.connection.ApiError
 import com.example.restopass.connection.ApiException
 import com.example.restopass.connection.RetrofitFactory
 import com.example.restopass.login.domain.User
@@ -61,7 +62,7 @@ object UserService {
                 else -> throw response.error()
             }
         } catch (e: IOException) {
-            if (e.message !== null) throw ApiException(e.message!!.fromJson())
+            if (e.localizedMessage !== null) throw ApiException(ApiError(1,1,e.localizedMessage!!))
             else throw e
         }
     }

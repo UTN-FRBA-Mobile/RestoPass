@@ -63,8 +63,13 @@
     <string name="pick_time_title">Seleccione un horario</string>
     <string name="pick_day_title">Seleccione una fecha</string>
     <string name="pick_guests_title">Seleccione número de comensales</string>
+    <string name="hours">%1$shs</string>
     <string name="confirm_reservation_disclaimer">Acordate que una vez confirmada la reserva se te descuenta una visita. Puedes cancelar hasta las %1$s del %2$s</string>
     <string name="already_add_invite">Usuario ya añadido</string>
+    <string name="table_full">El numero de invitados no puede exceder al numero de personas en la mesa</string>
+    <string name="guests_list">Mesa para %1$s personas </string>
+    <string name="confirm_reservation_title">¡Genial %1$s! \n Tu reserva esta confirmada</string>
+    <string name="share_body_reservation">¡Vamos a comer! Mesa para %1$s el %2$s a las %3$s en %4$s. Dirección: %5$s</string>
 
     <!-- Settings Fragment -->
     <string name="account">Cuenta</string>

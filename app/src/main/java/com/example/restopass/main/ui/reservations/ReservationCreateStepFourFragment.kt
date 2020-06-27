@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.restopass.R
@@ -38,12 +39,10 @@ class ReservationCreateStepFourFragment() : Fragment(), InvitesHolder.InvitesInt
 
     private lateinit var restaurantConfigViewModel: RestaurantConfigViewModel
     private lateinit var restaurantViewModel: RestaurantViewModel
-    private lateinit var createReservationViewModel: CreateReservationViewModel
     private lateinit var invitesAdapter: InvitesAdapter
 
     var job = Job()
     var coroutineScope = CoroutineScope(job + Dispatchers.Main)
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -74,86 +73,112 @@ class ReservationCreateStepFourFragment() : Fragment(), InvitesHolder.InvitesInt
             adapter = invitesAdapter
         }
 
+        if (createReservationViewModel.guestsList.isNotEmpty()) invitesAdapter.list =
+            createReservationViewModel.guestsList.toMutableList()
+
         buildLocalDateTime(createReservationViewModel.date, createReservationViewModel.hour)
 
-        Glide.with(this).load(restaurantViewModel.restaurant.img)
-            .into(view.restaurantImageReservation)
+        view.apply {
 
-        val stringWithFormat = "Reserva para <b>" + createReservationViewModel.guests +
-                " personas </b> <br> en <b>" + restaurantViewModel.restaurant.name + "</b> <br> " +
-                "el <b>" + dateToHuman() + "</b> a las <b>" + createReservationViewModel.hour + "hs</b>"
+            Glide.with(this).load(restaurantViewModel.restaurant.img)
+                .into(restaurantImageReservation)
 
-        view.createReservationSummary.text = Html.fromHtml(stringWithFormat)
+            val stringWithFormat = "Reserva para <b>" + createReservationViewModel.guests +
+                    " personas </b> <br> en <b>" + restaurantViewModel.restaurant.name + "</b> <br> " +
+                    "el <b>" + dateToHuman() + "</b> a las <b>" + createReservationViewModel.hour + "hs</b>"
 
-        view.createReservationInviteInputText.addTextChangedListener(object : TextWatcher {
-            override fun onTextChanged(
-                s: CharSequence,
-                start: Int,
-                before: Int,
-                count: Int
-            ) {
-                view.createReservationInviteButton.isEnabled =
-                    s.toString().trim { it <= ' ' }.length != 0
-            }
+            createReservationSummary.text = Html.fromHtml(stringWithFormat)
+            createReservationSummary.visibility = View.VISIBLE
 
-            override fun beforeTextChanged(
-                s: CharSequence, start: Int, count: Int,
-                after: Int
-            ) {
-                // TODO Auto-generated method stub
-            }
+            createReservationInviteInputText.addTextChangedListener(object : TextWatcher {
+                override fun onTextChanged(
+                    s: CharSequence,
+                    start: Int,
+                    before: Int,
+                    count: Int
+                ) {
+                    view.createReservationInviteButton.isEnabled =
+                        s.toString().trim { it <= ' ' }.length != 0
+                }
 
-            override fun afterTextChanged(s: Editable) {
-                // TODO Auto-generated method stub
-            }
-        })
+                override fun beforeTextChanged(
+                    s: CharSequence, start: Int, count: Int,
+                    after: Int
+                ) {
+                    // TODO Auto-generated method stub
+                }
 
-        view.createReservationSummary2.text = view.context.getString(
-            R.string.confirm_reservation_disclaimer,
-            getCancelHour(), getCancelDate()
-        )
+                override fun afterTextChanged(s: Editable) {
+                    // TODO Auto-generated method stub
+                }
+            })
+
+            createReservationSummary2.text = view.context.getString(
+                R.string.confirm_reservation_disclaimer,
+                getCancelHour(), getCancelDate()
+            )
 
 
-        view.createReservationInviteButton?.setOnClickListener {
-            coroutineScope.launch {
+            createReservationInviteButton?.setOnClickListener {
 
-                if (invitesAdapter.list.any { it.second == (view.createReservationInviteInputText!!.text.toString()) }) {
-                    val titleView: View =
-                        layoutInflater.inflate(R.layout.invitation_error, container, false)
-                    titleView.invitationErrorTitle.text = getString(R.string.already_add_invite)
-                    AlertDialog.getAlertDialog(
-                        titleView.context,
-                        titleView
-                    ).show()
-                } else {
-                    try {
-                        var user: User = UserService.checkCanAddToReservation(
-                            view.createReservationInviteInputText!!.text.toString(),
-                            getRestaurantBaseMembership(restaurantViewModel.restaurant)!!
-                        )
+                coroutineScope.launch {
 
-                        invitesAdapter.list.add(Pair(user.name + " " + user.lastName, user.email))
-                        invitesAdapter.notifyDataSetChanged()
-                    } catch (e: ApiException) {
+                    if (invitesAdapter.list.any { it.second == (view.createReservationInviteInputText!!.text.toString()) }) {
                         val titleView: View =
                             layoutInflater.inflate(R.layout.invitation_error, container, false)
-                        titleView.invitationErrorTitle.text =
-                            e.localizedMessage
+                        titleView.invitationErrorTitle.text = getString(R.string.already_add_invite)
                         AlertDialog.getAlertDialog(
                             titleView.context,
                             titleView
                         ).show()
-                    } catch (e: Exception) {
-                        if (isActive) Timber.e(e)
+                    } else if (invitesAdapter.list.size >= createReservationViewModel.guests.toInt() - 1) {
+                        val titleView: View =
+                            layoutInflater.inflate(R.layout.invitation_error, container, false)
+                        titleView.invitationErrorTitle.text = getString(R.string.table_full)
+                        AlertDialog.getAlertDialog(
+                            titleView.context,
+                            titleView
+                        ).show()
+                    } else {
+                        try {
+                            val user: User = UserService.checkCanAddToReservation(
+                                createReservationInviteInputText!!.text.toString(),
+                                getRestaurantBaseMembership(restaurantViewModel.restaurant)!!
+                            )
+
+                            invitesAdapter.list.add(
+                                Pair(
+                                    user.name + " " + user.lastName,
+                                    user.email
+                                )
+                            )
+                            invitesAdapter.notifyDataSetChanged()
+                        } catch (e: ApiException) {
+                            val titleView: View =
+                                layoutInflater.inflate(R.layout.invitation_error, container, false)
+                            titleView.invitationErrorTitle.text =
+                                e.localizedMessage
+                            AlertDialog.getAlertDialog(
+                                titleView.context,
+                                titleView
+                            ).show()
+                        } catch (e: Exception) {
+                            if (isActive) Timber.e(e)
+                        }
                     }
                 }
+
+            }
+
+            createReservationConfirmButton.setOnClickListener {
+                createReservationViewModel.guestsList = invitesAdapter.list
+                findNavController().navigate(R.id.reservationCreateStep5)
             }
         }
     }
 
     override fun onStop() {
         super.onStop()
-        job.cancel()
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -168,17 +193,21 @@ class ReservationCreateStepFourFragment() : Fragment(), InvitesHolder.InvitesInt
     }
 
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun dateToHuman(dt: LocalDateTime = createReservationViewModel.dateTime): String? {
+    companion object {
+        private lateinit var createReservationViewModel: CreateReservationViewModel
 
-        val dayName = dt.dayOfWeek.getDisplayName(
-            TextStyle.FULL,
-            Locale("es")
-        )
+        @RequiresApi(Build.VERSION_CODES.O)
+        fun dateToHuman(dt: LocalDateTime = createReservationViewModel.dateTime): String? {
 
-        val monthName = dt.month.getDisplayName(TextStyle.FULL, Locale("es"))
+            val dayName = dt.dayOfWeek.getDisplayName(
+                TextStyle.FULL,
+                Locale("es")
+            )
 
-        return dayName.capitalize() + " " + dt.dayOfMonth + " de " + monthName.capitalize() + " de " + dt.year
+            val monthName = dt.month.getDisplayName(TextStyle.FULL, Locale("es"))
+
+            return dayName.capitalize() + " " + dt.dayOfMonth + " de " + monthName.capitalize() + " de " + dt.year
+        }
     }
 
     override fun nextAndSave(guests: Int) {

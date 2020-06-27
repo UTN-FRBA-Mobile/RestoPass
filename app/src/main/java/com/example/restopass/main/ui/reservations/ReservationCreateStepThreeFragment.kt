@@ -16,15 +16,14 @@ import com.example.restopass.domain.CreateReservationViewModel
 import com.example.restopass.domain.RestaurantConfigViewModel
 import com.example.restopass.domain.RestaurantViewModel
 import com.prolificinteractive.materialcalendarview.CalendarDay
-import kotlinx.android.synthetic.main.reservation_create_step2.view.*
 import kotlinx.android.synthetic.main.reservation_create_step2.view.createReservationCalendarText
 import kotlinx.android.synthetic.main.reservation_create_step2.view.createReservationPickTime
 import kotlinx.android.synthetic.main.reservation_create_step2.view.createReservationRestaurantName
 import kotlinx.android.synthetic.main.reservation_create_step2.view.restaurantImageReservation
-import kotlinx.android.synthetic.main.reservation_create_step3.view.*
+import kotlinx.android.synthetic.main.reservation_create_step3.*
+import kotlinx.android.synthetic.main.reservation_create_step3.view.createReservationClockText
 
-class ReservationCreateStepThreeFragment() : Fragment(), GuestsHolder.NextListener
-{
+class ReservationCreateStepThreeFragment() : Fragment(), GuestsHolder.NextListener {
 
     private lateinit var restaurantConfigViewModel: RestaurantConfigViewModel
     private lateinit var restaurantViewModel: RestaurantViewModel
@@ -44,6 +43,8 @@ class ReservationCreateStepThreeFragment() : Fragment(), GuestsHolder.NextListen
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        createReservationClockText.visibility = View.VISIBLE
+
         guestsAdapter = GuestsAdapter(this)
 
         val linearLayoutManager = LinearLayoutManager(activity)
@@ -61,15 +62,19 @@ class ReservationCreateStepThreeFragment() : Fragment(), GuestsHolder.NextListen
         createReservationViewModel =
             ViewModelProvider(requireActivity()).get(CreateReservationViewModel::class.java)
 
-        Glide.with(this).load(restaurantViewModel.restaurant.img)
-            .into(view.restaurantImageReservation)
-        view.createReservationRestaurantName.text = restaurantViewModel.restaurant.name
-        view.createReservationCalendarText.text = buildDate(createReservationViewModel.date)
-        view.createReservationClockText.text = createReservationViewModel.hour + "hs"
+        view.apply {
 
-        guestsAdapter.list = IntRange(1, restaurantConfigViewModel.restaurantConfig.maxDiners.toInt()).chunked(4)
-
-
+            Glide.with(this).load(restaurantViewModel.restaurant.img)
+                .into(restaurantImageReservation)
+            createReservationRestaurantName.text = restaurantViewModel.restaurant.name
+            createReservationCalendarText.text = buildDate(createReservationViewModel.date)
+            createReservationClockText.text = context.getString(
+                R.string.hours,
+                createReservationViewModel.hour
+            )
+        }
+        guestsAdapter.list =
+            IntRange(1, restaurantConfigViewModel.restaurantConfig.maxDiners.toInt()).chunked(4)
 
 
     }

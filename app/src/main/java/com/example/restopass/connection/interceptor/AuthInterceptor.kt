@@ -23,17 +23,19 @@ class AuthInterceptor: Interceptor {
             return when {
                 response.isSuccessful -> response
                 else -> {
-                    var rawJson: String? = null
+                    var rawJson: String
                     if (response.code() == 401) {
                         rawJson = response.body()!!.string()
 
-                        val apiError: ApiError = rawJson!!.fromJson()
+                        val apiError: ApiError = rawJson.fromJson()
 
                         if (apiError.code == 40101) {
                             return resolveExpiredAccessToken(originalRequest, chain)
                         }
                     }
-                    throw IOException(rawJson)
+                    rawJson = response.body()!!.string()
+                    val apiError: ApiError = rawJson.fromJson()
+                    throw IOException(apiError.message)
                 }
             }
          }
