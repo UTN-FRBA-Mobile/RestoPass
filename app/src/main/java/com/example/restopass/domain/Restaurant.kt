@@ -12,7 +12,8 @@ data class Restaurant(
     val tags: List<String>,
     val timeTable: List<TimeTable>,
     val dishes: List<Dish>,
-    val stars: Double
+    val stars: Double,
+    val hoursToCancel : Int
 )
 
 data class TimeTable(val openingDays: List<String>, val pairHours: List<PairHour>?)

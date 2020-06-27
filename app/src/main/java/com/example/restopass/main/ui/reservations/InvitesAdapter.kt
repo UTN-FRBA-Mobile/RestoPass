@@ -8,14 +8,14 @@ import com.example.restopass.R
 import com.google.android.material.button.MaterialButton
 import kotlinx.android.synthetic.main.invites_row.view.*
 
-class InvitesAdapter(private val guestsFragment: ReservationCreateStepFourFragment) :
+class InvitesAdapter(private val invitesFragment: ReservationCreateStepFourFragment) :
     RecyclerView.Adapter<InvitesHolder>() {
 
-    var list: List<Pair<String, String>> = listOf()
+    var list: MutableList<Pair<String, String>> = mutableListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): InvitesHolder {
         val inflater = LayoutInflater.from(parent.context)
-        return InvitesHolder(inflater, parent, guestsFragment)
+        return InvitesHolder(inflater, parent, invitesFragment)
     }
 
     override fun onBindViewHolder(holder: InvitesHolder, position: Int) {
@@ -36,7 +36,7 @@ class InvitesHolder(
 
     fun bind(person: Pair<String, String>) {
         itemView.apply {
-            this.inviteNameAndLastName.text = person.first
+            this.inviteNameAndLastName.text = person.second + " (" + person.first + ")"
         }
     }
 

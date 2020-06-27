@@ -63,8 +63,7 @@
     <string name="pick_time_title">Seleccione un horario</string>
     <string name="pick_day_title">Seleccione una fecha</string>
     <string name="pick_guests_title">Seleccione número de comensales</string>
-    <string name="invitation_error_not_found">El usuario no esta registrado en RestoPass</string>
-    <string name="invitation_error_restaurant_not_in_membership">El restaurante no tiene platos disponibles en la membresía de este usuario</string>
+    <string name="confirm_reservation_disclaimer">Acuerdate que una vez confirmada la reserva se te descuenta una visita. Puedes cancelar hasta las %1$s del %2$s</string>
 
     <!-- Settings Fragment -->
     <string name="account">Cuenta</string>

@@ -50,6 +50,7 @@ class CreateReservationViewModel : ViewModel() {
     lateinit var date : CalendarDay
     lateinit var hour : String
     lateinit var guests : Integer
+    lateinit var dateTime : LocalDateTime
 }
 
 class RestaurantConfigViewModel : ViewModel() {
