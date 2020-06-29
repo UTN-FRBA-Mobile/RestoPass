@@ -16,6 +16,7 @@ data class User(
     val name: String,
     val lastName: String,
     val actualMembership: Int?,
+    var visits : Int,
     var favoriteRestaurants: MutableList<String>?
 ) {
    val firebaseTopic = email.replace("@", "")

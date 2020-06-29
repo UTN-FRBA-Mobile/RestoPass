@@ -147,6 +147,17 @@
 
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/reservationSuccessInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="20dp"
+        android:textSize="20sp"
+        android:text="@string/sucess_reservation_info"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:textAlignment="center"
+        app:layout_constraintTop_toBottomOf="@+id/reservationSuccessGuests"  />
+
     <Button
         android:id="@+id/reservationSuccessShare"
         android:layout_width="match_parent"
@@ -155,7 +166,7 @@
         android:backgroundTint="@color/restoPassGreen"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/reservationSuccessGuests"
+        app:layout_constraintTop_toBottomOf="@+id/reservationSuccessInfo"
         android:text="Compartir"
         />
 

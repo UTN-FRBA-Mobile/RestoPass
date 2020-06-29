@@ -15,6 +15,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.restopass.R
+import com.example.restopass.common.AppPreferences
 import com.example.restopass.connection.ApiException
 import com.example.restopass.domain.*
 import com.example.restopass.login.domain.User
@@ -139,6 +140,8 @@ class ReservationCreateStepFourFragment() : Fragment(), InvitesHolder.InvitesInt
                         ).show()
                     } else {
                         try {
+                            createReservationInviteButton.visibility = View.GONE
+                            inviteLoader.visibility = View.VISIBLE
                             val user: User = UserService.checkCanAddToReservation(
                                 createReservationInviteInputText!!.text.toString(),
                                 getRestaurantBaseMembership(restaurantViewModel.restaurant)!!
@@ -151,6 +154,9 @@ class ReservationCreateStepFourFragment() : Fragment(), InvitesHolder.InvitesInt
                                 )
                             )
                             invitesAdapter.notifyDataSetChanged()
+
+                            inviteLoader.visibility = View.GONE
+                            createReservationInviteButton.visibility = View.VISIBLE
                         } catch (e: ApiException) {
                             val titleView: View =
                                 layoutInflater.inflate(R.layout.invitation_error, container, false)
@@ -173,15 +179,17 @@ class ReservationCreateStepFourFragment() : Fragment(), InvitesHolder.InvitesInt
 
                 coroutineScope.launch {
                     try {
+                        createReservationConfirmButton.visibility = View.GONE
+                        confirmReservationLoader.visibility = View.VISIBLE
                         createReservationViewModel.send(restaurantViewModel.restaurant.restaurantId)
+                        AppPreferences.user.visits = AppPreferences.user.visits - 1
+                        findNavController().navigate(R.id.reservationCreateStep5)
                     } catch (e: Exception) {
                         if (isActive) {
                             Timber.e(e)
                         }
                     }
                 }
-
-                findNavController().navigate(R.id.reservationCreateStep5)
             }
         }
     }

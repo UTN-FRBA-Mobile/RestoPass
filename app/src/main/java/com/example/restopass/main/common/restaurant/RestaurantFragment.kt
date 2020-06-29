@@ -1,5 +1,6 @@
 package com.example.restopass.main.common.restaurant
 
+import android.content.DialogInterface
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -15,12 +16,15 @@ import com.bumptech.glide.Glide
 import com.example.restopass.R
 import com.example.restopass.common.AppPreferences
 import com.example.restopass.common.orElse
-import com.example.restopass.domain.*
+import com.example.restopass.domain.Membership
+import com.example.restopass.domain.MembershipsViewModel
+import com.example.restopass.domain.Restaurant
+import com.example.restopass.domain.RestaurantViewModel
 import com.example.restopass.main.MainActivity
 import com.example.restopass.main.common.AlertDialog
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_restaurant.*
-import kotlinx.android.synthetic.main.fragment_restaurants_list.*
 import kotlinx.coroutines.*
 import timber.log.Timber
 
@@ -130,8 +134,13 @@ class RestaurantFragment : Fragment() {
         AppPreferences.user.actualMembership?.let {
             if (isActualMembership(it, selectedMembership) ||
                 (selectedMembership == null && isRestaurantInMembership(it, restaurant))) {
+                restaurantFloatingButton.setOnClickListener{
+                    if(AppPreferences.user.visits <= 0) {
+                        showNoMoreVisitsDialog()
+                    } else {
+                        it.findNavController().navigate(R.id.reservationCreateStep1)}
+                    }
                 restaurantFloatingButton.setText(R.string.bookTable)
-                restaurantFloatingButton.setOnClickListener{it.findNavController().navigate(R.id.reservationCreateStep1)}
             } else setButtonByMembership(selectedMembership)
         }.orElse {
             setButtonByMembership(selectedMembership)
@@ -253,6 +262,21 @@ class RestaurantFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun showNoMoreVisitsDialog() {
+        val dialogClickListener =
+            DialogInterface.OnClickListener { _, which ->
+                when (which) {
+                    DialogInterface.BUTTON_POSITIVE -> {
+                        requireView().findNavController().navigate(R.id.membershipsFragment)
+                    }
+                }
+            }
+        val builder = androidx.appcompat.app.AlertDialog.Builder(requireView().context)
+        builder.setMessage(R.string.no_more_visits)
+            .setPositiveButton("Ver Membresias", dialogClickListener)
+            .show()
     }
 
     override fun onStop() {
