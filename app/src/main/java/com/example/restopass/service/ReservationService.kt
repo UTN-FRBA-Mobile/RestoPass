@@ -12,7 +12,7 @@ import retrofit2.http.*
 import timber.log.Timber
 
 object ReservationService {
-    private const val BASE_URL = "http://10.0.2.2:9290"
+    private const val BASE_URL = "https://restopass.herokuapp.com"
 
     interface ReservationApi{
         @GET("/reservations")
