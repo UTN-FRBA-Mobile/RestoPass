@@ -45,7 +45,7 @@
     <string name="reservation_action_cancel">Cancelar Reserva</string>
     <string name="reservation_action_canceled">Realizar otra reserva</string>
 
-    <string name="reservation_status_canceled">Cancelaste la reserva</string>
+    <string name="reservation_status_canceled">Reserva cancelada</string>
     <string name="reservation_status_done">Reserva concretada</string>
     <string name="reservation_status_confirmed">Confirmada</string>
     <string name="reservation_show_qr">Ver QR</string>

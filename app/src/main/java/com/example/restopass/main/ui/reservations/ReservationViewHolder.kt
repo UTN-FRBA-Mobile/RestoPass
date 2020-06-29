@@ -20,6 +20,7 @@ import com.example.restopass.main.common.AlertDialog
 import com.google.android.gms.common.util.Strings
 import kotlinx.android.synthetic.main.qr_dialog.view.*
 import kotlinx.android.synthetic.main.reservations_list_items.view.*
+import kotlinx.android.synthetic.main.view_setting_item.view.*
 import java.time.LocalDateTime
 import java.time.format.TextStyle
 import java.util.*
@@ -33,7 +34,7 @@ class ReservationHolder(
     RecyclerView.ViewHolder(inflater.inflate(R.layout.reservations_list_items, parentReservation, false)) {
     fun bind(reservation: Reservation) {
         itemView.apply {
-            Glide.with(itemView.context).load(R.drawable.pastas).into(reservationImage!!);
+            Glide.with(itemView.context).load(reservation.img).into(reservationImage!!);
             reservationTitle?.text = reservation.restaurantName
             reservationAddress?.text = reservation.restaurantAddress
 
@@ -58,6 +59,7 @@ class ReservationHolder(
             if (reservation.state == "DONE") {
                 reservationAction?.setText(R.string.reservation_action_review)
                 reservationStatus?.setText(R.string.reservation_status_done)
+                reservationStatus?.setTextColor(Color.parseColor("#87000000"))
                 reservationCard?.setBackgroundColor(Color.GRAY)
 
                 reservationAction.setOnClickListener {
@@ -123,17 +125,10 @@ class ReservationHolder(
                 }
             }
 
-            var confirmedUsersString = "";
-            var toConfirmUsersString = "";
-            reservation.toConfirmUsers?.forEach {
-                toConfirmUsersString = toConfirmUsersString.plus("\n" + transformName(it))
-            }
-            reservation.confirmedUsers?.forEach {
-                confirmedUsersString = confirmedUsersString.plus("\n" + transformName(it))
-            }
+            var confirmedUsersString = reservation.confirmedUsers?.joinToString { "\n" }
+            var toConfirmUsersString = reservation.toConfirmUsers?.joinToString { "\n" }
 
-            confirmedUsersString = confirmedUsersString.removePrefix("\n")
-            toConfirmUsersString = toConfirmUsersString.removePrefix("\n")
+
             if (!Strings.isEmptyOrWhitespace(confirmedUsersString) || !Strings.isEmptyOrWhitespace(
                     toConfirmUsersString
                 )
@@ -154,7 +149,8 @@ class ReservationHolder(
                     reservationDinersToConfirmTile?.visibility = View.GONE
                     reservationDinersToConfirm?.visibility = View.GONE
                 }
-
+            } else {
+                reservationArrow.visibility = View.GONE
             }
 
         }

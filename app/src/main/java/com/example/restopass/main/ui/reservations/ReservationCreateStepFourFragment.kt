@@ -16,16 +16,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.restopass.R
 import com.example.restopass.connection.ApiException
-import com.example.restopass.domain.CreateReservationViewModel
-import com.example.restopass.domain.Restaurant
-import com.example.restopass.domain.RestaurantConfigViewModel
-import com.example.restopass.domain.RestaurantViewModel
+import com.example.restopass.domain.*
 import com.example.restopass.login.domain.User
 import com.example.restopass.main.common.AlertDialog
 import com.example.restopass.service.UserService
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.invitation_error.view.*
+import kotlinx.android.synthetic.main.reservation_create_step1.view.*
 import kotlinx.android.synthetic.main.reservation_create_step2.view.restaurantImageReservation
 import kotlinx.android.synthetic.main.reservation_create_step4.view.*
 import kotlinx.coroutines.*
@@ -172,6 +170,17 @@ class ReservationCreateStepFourFragment() : Fragment(), InvitesHolder.InvitesInt
 
             createReservationConfirmButton.setOnClickListener {
                 createReservationViewModel.guestsList = invitesAdapter.list
+
+                coroutineScope.launch {
+                    try {
+                        createReservationViewModel.send(restaurantViewModel.restaurant.restaurantId)
+                    } catch (e: Exception) {
+                        if (isActive) {
+                            Timber.e(e)
+                        }
+                    }
+                }
+
                 findNavController().navigate(R.id.reservationCreateStep5)
             }
         }
@@ -184,11 +193,21 @@ class ReservationCreateStepFourFragment() : Fragment(), InvitesHolder.InvitesInt
     @RequiresApi(Build.VERSION_CODES.O)
     private fun buildLocalDateTime(date: CalendarDay, hour: String) {
         if (date.month < 10) {
-            createReservationViewModel.dateTime =
-                LocalDateTime.parse(date.year.toString() + "-0" + date.month.toString() + "-" + date.day.toString() + "T" + hour + ":00")
+            if(hour.split(":")[0].toInt() < 10) {
+                createReservationViewModel.dateTime =
+                    LocalDateTime.parse(date.year.toString() + "-0" + date.month.toString() + "-" + date.day.toString() + "T0" + hour + ":00")
+            } else {
+                createReservationViewModel.dateTime =
+                    LocalDateTime.parse(date.year.toString() + "-0" + date.month.toString() + "-" + date.day.toString() + "T" + hour + ":00")
+            }
         } else {
-            createReservationViewModel.dateTime =
-                LocalDateTime.parse(date.year.toString() + "-" + date.month.toString() + "-" + date.day.toString() + "T" + hour + ":00")
+            if(hour.split("")[0].toInt() < 10) {
+                createReservationViewModel.dateTime =
+                    LocalDateTime.parse(date.year.toString() + "-" + date.month.toString() + "-" + date.day.toString() + "T0" + hour + ":00")
+            } else {
+                createReservationViewModel.dateTime =
+                    LocalDateTime.parse(date.year.toString() + "-" + date.month.toString() + "-" + date.day.toString() + "T" + hour + ":00")
+            }
         }
     }
 
