@@ -44,6 +44,18 @@ class ReservationCreateStepOneFragment() : Fragment(), OnDateSelectedListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+    }
+
+
+    override fun onStop() {
+        super.onStop()
+        job.cancel()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        job = Job()
+        coroutineScope = CoroutineScope(job + Dispatchers.Main)
 
         restaurantViewModel =
             ViewModelProvider(requireActivity()).get(RestaurantViewModel::class.java)
@@ -56,7 +68,7 @@ class ReservationCreateStepOneFragment() : Fragment(), OnDateSelectedListener {
 
         createReservationViewModel.guestsList = listOf()
 
-        view.apply {
+        view?.apply {
 
             Glide.with(this).load(restaurantViewModel.restaurant.img)
                 .into(restaurantImageReservation)
@@ -80,8 +92,8 @@ class ReservationCreateStepOneFragment() : Fragment(), OnDateSelectedListener {
             calendarView.setOnDateChangedListener(this@ReservationCreateStepOneFragment)
 
         }
-    }
 
+    }
 
     override fun onDateSelected(
         widget: MaterialCalendarView,

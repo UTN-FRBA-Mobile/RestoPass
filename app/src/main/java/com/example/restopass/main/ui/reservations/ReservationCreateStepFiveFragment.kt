@@ -96,6 +96,11 @@ class ReservationCreateStepFiveFragment() : Fragment() {
         }
     }
 
+    override fun onStop() {
+        super.onStop()
+        job.cancel()
+    }
+
     @RequiresApi(Build.VERSION_CODES.O)
     private fun buildShareBody() : String? {
         return view?.context?.getString(R.string.share_body_reservation,

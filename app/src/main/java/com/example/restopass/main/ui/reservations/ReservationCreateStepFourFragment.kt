@@ -196,6 +196,14 @@ class ReservationCreateStepFourFragment() : Fragment(), InvitesHolder.InvitesInt
 
     override fun onStop() {
         super.onStop()
+        job.cancel()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        job = Job()
+        coroutineScope = CoroutineScope(job + Dispatchers.Main)
+
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
