@@ -98,7 +98,9 @@
                                             android:layout_height="wrap_content"
                                             android:layout_toEndOf="@id/restoImage"
                                             android:text="@string/resto_card_text"
-                                            android:textAppearance="?attr/textAppearanceHeadline6" />
+                                            android:textAppearance="?attr/textAppearanceHeadline6"
+                                            android:ellipsize="end"
+                                            android:maxLines="1"/>
 
                                         <com.iarcuschin.simpleratingbar.SimpleRatingBar
                                             android:id="@+id/restaurantRating"
